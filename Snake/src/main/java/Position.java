@@ -3,6 +3,11 @@ public class Position {
 	private int pozX;
 	private int pozY;
 	
+	public Position(int x, int y){
+		pozX = x;
+		pozY = y;
+	}
+	
 	public void SetX(int x)
 	{
 		pozX=x;
