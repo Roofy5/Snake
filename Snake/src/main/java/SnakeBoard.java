@@ -30,31 +30,41 @@ public class SnakeBoard extends JPanel{
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e) {
 				int code = e.getKeyCode();
-				switch(code){ 				
-					case KeyEvent.VK_UP:
-						direction = Direction.UP;
-						if(!running)
-							timer.start();
-						System.out.println("UP!");
+				
+				for(int i = 0; i < Snake.noSnake; i++)
+				{
+					Snake snake = boardLevel.GetListOfSnakes().get(i);
+					SettingsControl control = snake.config.GetControl();
+		
+					if(code == control.up)
+					{
+						System.out.print("UP");
+						snake.SetDirection(Direction.UP);
 						break;
-					case KeyEvent.VK_DOWN:
-						direction = Direction.DOWN;
-						if(!running)
-							timer.start();
+					}
+					if(code == control.down)
+					{
+						System.out.print("DWON");
+						snake.SetDirection(Direction.DOWN);
 						break;
-					case KeyEvent.VK_RIGHT:
-						direction = Direction.RIGHT;
-						if(!running)
-							timer.start();
+					}
+					if(code == control.left)
+					{
+						System.out.print("LEFT");
+						snake.SetDirection(Direction.LEFT);
 						break;
-					case KeyEvent.VK_LEFT:
-						direction = Direction.LEFT;
-						if(!running)
-							timer.start();
+					}
+					if(code == control.right)
+					{
+						System.out.print("RIGHT");
+						snake.SetDirection(Direction.RIGHT);
 						break;
+					}
 				}
-			}
-        });
+				if(!running)
+					timer.start();
+				}
+			});
 	}
 	
 	protected void paintComponent(Graphics g){
@@ -82,14 +92,7 @@ public class SnakeBoard extends JPanel{
 	private class TimerTick implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
-			switch(direction){
-			case UP:
-			case DOWN:
-			case LEFT:
-			case RIGHT:
-				boardLevel.move(direction);
-				break;
-			}
+			boardLevel.move();
 			repaint();
 		}
 		

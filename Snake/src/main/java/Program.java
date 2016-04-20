@@ -19,7 +19,7 @@ public class Program {
                 window.add(new JButton(), BorderLayout.SOUTH);
                 System.out.println(board.isFocusable());
                 board.setFocusable(true);
-                board.boardLevel.AddToObjectList(new Snake(3,4));
+                board.boardLevel.AddToObjectList(new Snake(3,4, new SnakeConfiguration(new SettingsControl('W', 'S', 'A', 'D'))));
                 board.boardLevel.AddToObjectList(new Tail(0,0));
                 //board.boardLevel.AddToObjectList(new Tail(3,4));
                 board.boardLevel.AddToObjectList(new Tail(1,1));
