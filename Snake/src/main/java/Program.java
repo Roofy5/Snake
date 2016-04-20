@@ -10,11 +10,11 @@ public class Program {
 		EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JFrame window = new JFrame();
-                window.setSize(400, 200);
+                window.setSize(800, 400);
                 window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 window.setVisible(true);
                 window.setLayout(new BorderLayout());
-                SnakeBoard board = new SnakeBoard(50, 20, 40, 20, 5);
+                SnakeBoard board = new SnakeBoard(50, 20, 60, 30, 10);
                 window.add(board);
                 window.add(new JButton(), BorderLayout.SOUTH);
                 System.out.println(board.isFocusable());
