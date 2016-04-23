@@ -1,11 +1,14 @@
+import java.awt.Color;
+
 
 public abstract class DrawableObject {
-	private Position pos;
+	protected Position pos;
 	private Level lvl;
 	
-	public DrawableObject(int x, int y){
+	/*Niepotrzebny bo startowa pozycje pobieramy z config
+	 * public DrawableObject(int x, int y){
 		pos = new Position(x, y);
-	}
+	}*/
 	
 	public Position GetPosition()
 	{
@@ -16,4 +19,6 @@ public abstract class DrawableObject {
 	{
 		pos = p;
 	}
+	
+	public abstract Color GetColor(); // Funkcja do przeladowania w kazdej podklasie
 }

@@ -1,9 +1,18 @@
+import java.awt.Color;
 
-public class Apple extends DrawableObject {
 
-	public Apple(int x, int y) {
-		super(x, y);
-		// TODO Auto-generated constructor stub
+public class Apple extends DrawableObject 
+{
+	public AppleConfiguration config;
+	
+	public Apple(AppleConfiguration config) {
+		pos = config.GetStartPosition();
+		this.config = config;
+	}
+	
+	public Color GetColor()
+	{
+		return config.GetColor();
 	}
 
 }
