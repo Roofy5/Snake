@@ -1,20 +1,28 @@
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 
-public class Level {
-	private int sizeX;
-	private int sizeY;
+public class Level{
+	public int sizeX;
+	public int sizeY;
 	private List <Snake> listaSnake;
 	private List <DrawableObject> mapa;	
-	private int applesPending = 0;
-	Level(int sizeX, int sizeY, List<DrawableObject> objects)
+	private List <Apple> apples;
+	Level(int sizeX, int sizeY)
 	{
 		this.sizeX = sizeX;
 		this.sizeY = sizeY;
-		mapa = objects;	
-		listaSnake = new ArrayList<Snake>();
+		mapa = new ArrayList<DrawableObject>();	
+		listaSnake = new LinkedList<Snake>();// lepsza wydajnosc gdy usuwamy iterujac po liscie
+		apples = new ArrayList<Apple>();
+	}
+	
+	public List<DrawableObject> GetMap()
+	{
+		return mapa;
 	}
 	
 	public void AddToObjectList(DrawableObject object){
@@ -22,18 +30,27 @@ public class Level {
 		
 		if(object instanceof Snake)
 			listaSnake.add((Snake)object);
+		if(object instanceof Apple)
+			apples.add((Apple)object);
 	}
 	
 	public void UpdatePosition() {}
 	public void CheckControlers() {}
 	
-	public void RemoveFromObjectList(DrawableObject object){
-		for(DrawableObject ob : mapa)
-			if(ob == object)
-				mapa.remove(object);
+	public void RemoveFromAppleList(Apple apple)
+	{
+		apples.remove(apple);
 	}
 	
-	public void RemoveFromSnakeList(Snake s) {}
+	public void RemoveFromObjectList(DrawableObject object)
+	{
+			mapa.remove(object);
+	}
+	
+	public void RemoveFromSnakeList(Snake s) 
+	{
+		listaSnake.remove(s);
+	}
 	public void ClearMap() {}
 	public List<Snake> GetListOfSnakes()
 	{
@@ -46,9 +63,10 @@ public class Level {
 		while(mapa.size() >= sizeX * sizeY && found) // pelna mapa - usuwamy czesc jablek aby zrobic miejsce
 		{
 			found = false;
-			for(DrawableObject obj : mapa)
-				if(obj instanceof Apple && ((Apple)obj).eaten){
-					RemoveFromObjectList(obj);
+			for(Apple apple : apples)
+				if(apple.eaten){
+					RemoveFromObjectList(apple);
+					RemoveFromAppleList(apple);
 					found = true;
 					break;
 				}
@@ -58,17 +76,19 @@ public class Level {
 		
 		generator = new Random();
 
-		for(DrawableObject ob : mapa){
-			if(ob instanceof Apple && ((Apple)ob).eaten){
-				Apple apple = (Apple) ob;
-				boolean used = false;
+		for(Apple apple : apples){
+			if(apple.eaten){
+				boolean used;
 				do{
+					used = false;
 					apple.GetPosition().SetX(generator.nextInt(sizeX));
 					apple.GetPosition().SetY(generator.nextInt(sizeY));
 					
 					for(DrawableObject obj : mapa)
-						if(obj.GetPosition().equals(apple.GetPosition()) && apple != obj)
+						if(obj.GetPosition().equals(apple.GetPosition()) && apple != obj){
 							used = true;		
+							break;
+						}
 					
 				}while(used);
 				apple.eaten = false;
@@ -77,29 +97,31 @@ public class Level {
 	}
 	
 	private void GrowSnakes(){
-		for(DrawableObject obj : mapa){
-			if(obj instanceof Apple){
-				for(Snake snake : listaSnake)
-					if(snake.GetPosition().equals(obj.GetPosition())){
-						snake.Grow();
-						((Apple)obj).eaten = true;
-						System.out.println("EATEN!");
-					}
-			}
+		for(Apple apple : apples){
+			for(Snake snake : listaSnake)
+				if(snake.GetPosition().equals(apple.GetPosition())){
+					snake.Grow();
+					apple.eaten = true;
+					System.out.println("EATEN!");
+				}
 		}
 	}
 	
 	private void CheckSnakeCollisions(){
-		for(Snake snake : listaSnake){
+		for(Iterator<Snake> it = listaSnake.iterator(); it.hasNext();){
+			Snake snake = it.next();
+			Position pos = snake.GetPosition();
 			for(DrawableObject ob : mapa){
-				if(snake.GetPosition().equals(ob.GetPosition()) && snake != ob){
+				if(pos.equals(ob.GetPosition()) && snake != ob){
 					if(ob instanceof Snake){
-						snake.alive = false;
-						((Snake) ob).alive = false;
+						if(!listaSnake.contains((Snake)ob))
+							snake.UndoMove();
+						it.remove();
 					}
-					else if(ob instanceof Tail){
-						snake.alive = false;
+					if(ob instanceof Tail){
 						snake.UndoMove();
+						it.remove();
+						
 					}
 				}	
 			}
@@ -107,24 +129,25 @@ public class Level {
 	}
 	
 	private void CheckSnakesInBoard(){
-		for(Snake snake : listaSnake){
-		Position position = snake.GetPosition();
-		if(snake.GetDirection() == Direction.UP){
-			if(position.GetY() <= 0)
-				snake.alive = false;
-		}
-		else if(snake.GetDirection() == Direction.DOWN){
-			if(position.GetY() >= sizeY - 1)
-				snake.alive = false;
-		}
-		else if(snake.GetDirection() == Direction.LEFT){
-			if(position.GetX() <= 0) 
-				snake.alive = false;
-		}
-		else if(snake.GetDirection() == Direction.RIGHT){
-			if(position.GetX() >= 0)
-				snake.alive = false;
-		}
+		for(Iterator<Snake> it = listaSnake.iterator(); it.hasNext();){
+			Snake snake = it.next();
+			Position position = snake.GetPosition();
+			if(snake.GetDirection() == Direction.UP){
+				if(position.GetY() <= 0)
+					it.remove();
+			}
+			else if(snake.GetDirection() == Direction.DOWN){
+				if(position.GetY() >= sizeY - 1)
+					it.remove();
+			}
+			else if(snake.GetDirection() == Direction.LEFT){
+				if(position.GetX() <= 0) 
+					it.remove();
+			}
+			else if(snake.GetDirection() == Direction.RIGHT){
+				if(position.GetX() >= sizeX - 1)
+					it.remove();
+			}
 		}
 	}
 	

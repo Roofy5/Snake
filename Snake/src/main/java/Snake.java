@@ -5,12 +5,14 @@ import java.util.List;
 
 public class Snake extends DrawableObject
 {
+	public boolean alive = true;
+	private List <DrawableObject> levelMap;
 	public SnakeConfiguration snakeConfig;
 	public TailConfiguration tailConfig;
 	public static int noSnake = 0; 
-	public boolean alive = true;
 	private int id;
-	private Direction direction;
+	private Direction direction = null;
+	private Direction lastDirection = null;
 	private List<Tail> tails;
 	private Position lastTail; //poprzednia pozycja konca ogona(mozliwosc wycofania ruchu)
 			
@@ -21,7 +23,7 @@ public class Snake extends DrawableObject
 		this.config = config;
 	}	*/
 	
-	public Snake(SnakeConfiguration config, TailConfiguration tailConfig) 
+	public Snake(SnakeConfiguration config, TailConfiguration tailConfig, List<DrawableObject> levelMap) 
 	{
 		id = noSnake;
 		noSnake++;
@@ -29,10 +31,17 @@ public class Snake extends DrawableObject
 		this.tailConfig = tailConfig;
 		pos = config.GetSettings().GetStartPosition();
 		tails = new ArrayList<Tail>();
+		this.levelMap = levelMap;
 	}	
 	
 	public void SetDirection(Direction direction)
 	{
+		if(GetDirection() == null && direction == tailConfig.GetStartDirection() || //Stany zabronione np poruszanie sie 
+			lastDirection == Direction.RIGHT && direction == Direction.LEFT ||		//w calkiem druga strone
+			lastDirection == Direction.LEFT && direction == Direction.RIGHT ||
+			lastDirection == Direction.UP && direction == Direction.DOWN ||
+			lastDirection == Direction.DOWN && direction == Direction.UP)
+			return;
 		this.direction = direction;
 	}
 	
@@ -53,7 +62,9 @@ public class Snake extends DrawableObject
 	
 	public void AddTail(Position pos)
 	{
-		tails.add(new Tail(pos, tailConfig));
+		Tail tail = new Tail(pos, tailConfig);
+		tails.add(tail);
+		levelMap.add(tail);
 	}
 	
 	public void AddTail(){
@@ -137,8 +148,9 @@ public class Snake extends DrawableObject
 	}
 	
 	public void Move(){
-		if(!alive)
+		if(GetDirection() == null)
 			return;
+		
 		if(tails.size() > 0)//Zapisujemy pozycje ostatniego elementu ogona w razie potrzeby
 			lastTail = tails.get(tails.size() - 1).GetPosition();
 		else
@@ -146,5 +158,6 @@ public class Snake extends DrawableObject
 		
 		MoveTail();
 		MoveHead();
+		lastDirection = GetDirection();
 	}
 }

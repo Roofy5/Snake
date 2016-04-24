@@ -19,15 +19,15 @@ public class SnakeBoard extends JPanel{
 	//private int up_key, down_key, left_key, right_key;
 	private List <DrawableObject> objects;
 	public Level boardLevel;
-	public SnakeBoard(int x, int y, int sizeX, int sizeY, int s){
+	public SnakeBoard(int x, int y, int s, Level level){
 		start_x = x;
 		start_y = y;
 		size = s;
-		width = sizeX * size;
-		height = sizeY * size;
-		objects = new ArrayList<DrawableObject>();
-		boardLevel = new Level(sizeX, sizeY, objects);
-		timer = new Timer(500, new TimerTick());
+		boardLevel = level;
+		width = level.sizeX * size;
+		height = level.sizeY * size;
+		objects = level.GetMap();	
+		timer = new Timer(250, new TimerTick());
 		timer.setInitialDelay(0);
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e) {
@@ -35,35 +35,30 @@ public class SnakeBoard extends JPanel{
 				List<Snake> snakes = boardLevel.GetListOfSnakes();
 				for(Snake snake : snakes)
 				{
-					if(snake.alive){
-						SettingsControl control = snake.snakeConfig.GetControl();
-			
-						if(code == control.up)
-						{
-							System.out.print("UP");
-							snake.SetDirection(Direction.UP);
-							break;
-						}
-						if(code == control.down)
-						{
-							System.out.print("DWON");
-							snake.SetDirection(Direction.DOWN);
-							break;
-						}
-						if(code == control.left)
-						{
-							System.out.print("LEFT");
-							snake.SetDirection(Direction.LEFT);
-							break;
-						}
-						if(code == control.right)
-						{
-							System.out.print("RIGHT");
-							snake.SetDirection(Direction.RIGHT);
-							break;
-						}
+					SettingsControl control = snake.snakeConfig.GetControl();
+		
+					if(code == control.up)
+					{
+						snake.SetDirection(Direction.UP);
+						break;
+					}
+					if(code == control.down)
+					{
+						snake.SetDirection(Direction.DOWN);
+						break;
+					}
+					if(code == control.left)
+					{
+						snake.SetDirection(Direction.LEFT);
+						break;
+					}
+					if(code == control.right)
+					{
+						snake.SetDirection(Direction.RIGHT);
+						break;
 					}
 				}
+			
 				if(!running) // W tej chwili timer startuje po przycisnieciu dowolnego przycisku
 					timer.start();
 					running = true;
@@ -77,8 +72,8 @@ public class SnakeBoard extends JPanel{
 		g2.setColor(Color.BLACK);
 		g2.drawRect(start_x, start_y, width, height);
 		for(DrawableObject ob : objects){
-			System.out.println(ob);
 			Position pos = ob.GetPosition();
+			//System.out.println("X = " + pos.GetX() + " Y = " + pos.GetY());
 			int upperLeftX = start_x + pos.GetX() * size;
 			int upperLeftY = start_y + pos.GetY() * size;
 			/*
