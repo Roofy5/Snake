@@ -25,13 +25,14 @@ public class Program {
                 //Dodanie pierwszego weza
                 SettingsSnake settingsSnake_1 = new SettingsSnake(new Position(3, 4), Color.GREEN);
                 SettingsControl controlSnake_1 = new SettingsControl('W', 'S', 'A', 'D');
-                board.boardLevel.AddToObjectList(new Snake(new SnakeConfiguration(settingsSnake_1, controlSnake_1) ));
+                TailConfiguration tailConfig = new TailConfiguration(Direction.DOWN, Color.BLUE);
+                AppleConfiguration appleConfig = new AppleConfiguration(Color.YELLOW);
+                Snake snake1 = new Snake(new SnakeConfiguration
+                		(settingsSnake_1, controlSnake_1),tailConfig);
+                snake1.AddTail(5);
+                board.boardLevel.AddToObjectList(snake1);           
+                board.boardLevel.AddToObjectList(new Apple(new Position(5,2), appleConfig));
                 
-                board.boardLevel.AddToObjectList(new Tail(new TailConfiguration(new Position(0,0), Color.BLACK)));
-                board.boardLevel.AddToObjectList(new Tail(new TailConfiguration(new Position(1,1), Color.BLACK)));
-                board.boardLevel.AddToObjectList(new Tail(new TailConfiguration(new Position(2,2), Color.BLACK)));
-                board.boardLevel.AddToObjectList(new Apple(new AppleConfiguration(new Position(5,2), Color.RED)));
-                board.boardLevel.AddToObjectList(new Tail(new TailConfiguration(new Position(2,6), Color.BLACK)));
                 board.repaint();
             }
         });

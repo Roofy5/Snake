@@ -2,18 +2,19 @@ import java.awt.Color;
 
 
 public class TailConfiguration {
-	private Position startPosition;
-	private Color color;
+	private Direction startDirection; //Elementy ogona nie beda istniec samodzielnie
+	private Color color;				//wiec nie potrzebujemy ich pozycji startowej
+										//jedynie wzgledny kierunek poczatkowy od glowy
 	
-	TailConfiguration(Position startPosition, Color color)
+	TailConfiguration(Direction startDirection, Color color)
 	{
-		this.startPosition = startPosition;
+		this.startDirection = startDirection;
 		this.color = color;
 	}
 	
-	public Position GetStartPosition()
+	public Direction GetStartDirection()
 	{
-		return startPosition;
+		return startDirection;
 	}
 	
 	public Color GetColor()

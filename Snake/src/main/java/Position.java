@@ -27,4 +27,13 @@ public class Position {
 	{
 		return pozY;
 	}
+	@Override
+	public boolean equals(Object ob){
+		if(ob instanceof Position){
+			Position pos = (Position) ob;
+			if(pos.GetX() == GetX() && pos.GetY() == GetY())
+				return true;
+		}
+		return false;
+	}
 }

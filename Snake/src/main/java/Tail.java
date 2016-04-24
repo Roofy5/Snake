@@ -5,8 +5,8 @@ public class Tail extends DrawableObject {
 
 	public TailConfiguration config;
 	
-	public Tail(TailConfiguration config) {
-		pos = config.GetStartPosition();
+	public Tail(Position position, TailConfiguration config) {
+		pos = position;
 		this.config = config;
 	}
 	

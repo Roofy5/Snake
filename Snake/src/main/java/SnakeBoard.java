@@ -5,6 +5,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.Timer;
@@ -15,7 +17,7 @@ public class SnakeBoard extends JPanel{
 	private Timer timer;
 	private int start_x, start_y, width, height, size;
 	//private int up_key, down_key, left_key, right_key;
-	private DrawableObject[][] objects;
+	private List <DrawableObject> objects;
 	public Level boardLevel;
 	public SnakeBoard(int x, int y, int sizeX, int sizeY, int s){
 		start_x = x;
@@ -23,46 +25,48 @@ public class SnakeBoard extends JPanel{
 		size = s;
 		width = sizeX * size;
 		height = sizeY * size;
-		objects = new DrawableObject[sizeY][sizeX];
+		objects = new ArrayList<DrawableObject>();
 		boardLevel = new Level(sizeX, sizeY, objects);
 		timer = new Timer(500, new TimerTick());
 		timer.setInitialDelay(0);
 		addKeyListener(new KeyAdapter(){
 			public void keyPressed(KeyEvent e) {
 				int code = e.getKeyCode();
-				
-				for(int i = 0; i < Snake.noSnake; i++)
+				List<Snake> snakes = boardLevel.GetListOfSnakes();
+				for(Snake snake : snakes)
 				{
-					Snake snake = boardLevel.GetListOfSnakes().get(i);
-					SettingsControl control = snake.config.GetControl();
-		
-					if(code == control.up)
-					{
-						System.out.print("UP");
-						snake.SetDirection(Direction.UP);
-						break;
-					}
-					if(code == control.down)
-					{
-						System.out.print("DWON");
-						snake.SetDirection(Direction.DOWN);
-						break;
-					}
-					if(code == control.left)
-					{
-						System.out.print("LEFT");
-						snake.SetDirection(Direction.LEFT);
-						break;
-					}
-					if(code == control.right)
-					{
-						System.out.print("RIGHT");
-						snake.SetDirection(Direction.RIGHT);
-						break;
+					if(snake.alive){
+						SettingsControl control = snake.snakeConfig.GetControl();
+			
+						if(code == control.up)
+						{
+							System.out.print("UP");
+							snake.SetDirection(Direction.UP);
+							break;
+						}
+						if(code == control.down)
+						{
+							System.out.print("DWON");
+							snake.SetDirection(Direction.DOWN);
+							break;
+						}
+						if(code == control.left)
+						{
+							System.out.print("LEFT");
+							snake.SetDirection(Direction.LEFT);
+							break;
+						}
+						if(code == control.right)
+						{
+							System.out.print("RIGHT");
+							snake.SetDirection(Direction.RIGHT);
+							break;
+						}
 					}
 				}
-				if(!running)
+				if(!running) // W tej chwili timer startuje po przycisnieciu dowolnego przycisku
 					timer.start();
+					running = true;
 				}
 			});
 	}
@@ -72,30 +76,28 @@ public class SnakeBoard extends JPanel{
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setColor(Color.BLACK);
 		g2.drawRect(start_x, start_y, width, height);
-		for(DrawableObject[] row : objects)
-			for(DrawableObject ob : row){
-				if(ob != null){
-					Position pos = ob.GetPosition();
-					int upperLeftX = start_x + pos.GetX() * size;
-					int upperLeftY = start_y + pos.GetY() * size;
-					/*
-					if(ob instanceof Snake)
-						g2.setColor(Color.GREEN);
-					else if(ob instanceof Tail)
-						g2.setColor(Color.BLACK);
-					else if(ob instanceof Apple)
-						g2.setColor(Color.RED);
-					*/
-					g2.setColor(ob.GetColor()); //nowe ulepszone
-					g2.fillRect(upperLeftX, upperLeftY, size, size);
-				}
-			}
+		for(DrawableObject ob : objects){
+			System.out.println(ob);
+			Position pos = ob.GetPosition();
+			int upperLeftX = start_x + pos.GetX() * size;
+			int upperLeftY = start_y + pos.GetY() * size;
+			/*
+			if(ob instanceof Snake)
+				g2.setColor(Color.GREEN);
+			else if(ob instanceof Tail)
+				g2.setColor(Color.BLACK);
+			else if(ob instanceof Apple)
+				g2.setColor(Color.RED);
+			*/
+			g2.setColor(ob.GetColor()); //nowe ulepszone
+			g2.fillRect(upperLeftX, upperLeftY, size, size);
+		}
 	}
 	
 	private class TimerTick implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
-			boardLevel.move();
+			boardLevel.Move();
 			repaint();
 		}
 		

@@ -4,9 +4,10 @@ import java.awt.Color;
 public class Apple extends DrawableObject 
 {
 	public AppleConfiguration config;
+	public boolean eaten = false;
 	
-	public Apple(AppleConfiguration config) {
-		pos = config.GetStartPosition();
+	public Apple(Position position, AppleConfiguration config) {
+		pos = position;
 		this.config = config;
 	}
 	
