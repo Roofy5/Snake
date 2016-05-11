@@ -1,5 +1,5 @@
 import java.awt.Color;
-
+/*XX*/
 
 public class Apple extends DrawableObject 
 {

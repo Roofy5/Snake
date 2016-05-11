@@ -8,7 +8,9 @@ import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.AbstractAction;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
 public class SnakeBoard extends JPanel{	
@@ -29,41 +31,7 @@ public class SnakeBoard extends JPanel{
 		objects = level.GetMap();	
 		timer = new Timer(250, new TimerTick());
 		timer.setInitialDelay(0);
-		addKeyListener(new KeyAdapter(){
-			public void keyPressed(KeyEvent e) {
-				int code = e.getKeyCode();
-				List<Snake> snakes = boardLevel.GetListOfSnakes();
-				for(Snake snake : snakes)
-				{
-					SettingsControl control = snake.snakeConfig.GetControl();
-		
-					if(code == control.up)
-					{
-						snake.SetDirection(Direction.UP);
-						break;
-					}
-					if(code == control.down)
-					{
-						snake.SetDirection(Direction.DOWN);
-						break;
-					}
-					if(code == control.left)
-					{
-						snake.SetDirection(Direction.LEFT);
-						break;
-					}
-					if(code == control.right)
-					{
-						snake.SetDirection(Direction.RIGHT);
-						break;
-					}
-				}
-			
-				if(!running) // W tej chwili timer startuje po przycisnieciu dowolnego przycisku
-					timer.start();
-					running = true;
-				}
-			});
+		timer.start();
 	}
 	
 	protected void paintComponent(Graphics g){
@@ -87,6 +55,36 @@ public class SnakeBoard extends JPanel{
 			g2.setColor(ob.GetColor()); //nowe ulepszone
 			g2.fillRect(upperLeftX, upperLeftY, size, size);
 		}
+	}
+	
+	void attachControl(final Snake snake, String actionName){
+		getInputMap().put(KeyStroke.getKeyStroke(snake.snakeConfig.GetControl().up, 0),actionName + "UP");
+        getActionMap().put(actionName + "UP",new AbstractAction(){
+        	public void actionPerformed(ActionEvent e) {
+               snake.SetDirection(Direction.UP);
+            }
+        });
+        //DOWN
+        getInputMap().put(KeyStroke.getKeyStroke(snake.snakeConfig.GetControl().down, 0),actionName + "DOWN");
+        getActionMap().put(actionName + "DOWN",new AbstractAction(){
+        	public void actionPerformed(ActionEvent e) {
+               snake.SetDirection(Direction.DOWN);
+            }
+        });
+        //LEFT
+        getInputMap().put(KeyStroke.getKeyStroke(snake.snakeConfig.GetControl().left, 0),actionName + "LEFT");
+        getActionMap().put(actionName + "LEFT",new AbstractAction(){
+        	public void actionPerformed(ActionEvent e) {
+               snake.SetDirection(Direction.LEFT);
+            }
+        });
+        //RIGHT
+        getInputMap().put(KeyStroke.getKeyStroke(snake.snakeConfig.GetControl().right, 0),actionName + "RIGHT");
+        getActionMap().put(actionName + "RIGHT",new AbstractAction(){
+        	public void actionPerformed(ActionEvent e) {
+               snake.SetDirection(Direction.RIGHT);
+            }
+        });
 	}
 	
 	private class TimerTick implements ActionListener{

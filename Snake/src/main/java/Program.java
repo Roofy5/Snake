@@ -1,9 +1,12 @@
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
 
+import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.KeyStroke;
 
 public class Program {
 
@@ -29,10 +32,13 @@ public class Program {
                 TailConfiguration tailConfig = new TailConfiguration(Direction.DOWN, Color.BLUE);
                 AppleConfiguration appleConfig = new AppleConfiguration(Color.YELLOW);
                 AppleConfiguration redAppleConfig = new AppleConfiguration(Color.RED);
-                Snake snake1 = new Snake(new SnakeConfiguration
+                final Snake snake1 = new Snake(new SnakeConfiguration
                 		(settingsSnake_1, controlSnake_1),tailConfig, myLevel.GetMap());
                 snake1.AddTail(5);
                 board.boardLevel.AddToObjectList(snake1);   
+                
+                board.attachControl(snake1, "Snake1");
+                
               //Dodanie drugiego weza
                 SettingsSnake settingsSnake_2 = new SettingsSnake(new Position(7, 4), Color.PINK);
                 SettingsControl controlSnake_2 = new SettingsControl('I', 'K', 'J', 'L');
@@ -41,6 +47,8 @@ public class Program {
                 		(settingsSnake_2, controlSnake_2),tailConfig2, myLevel.GetMap());
                 snake2.AddTail(7);
                 board.boardLevel.AddToObjectList(snake2);   
+                
+                board.attachControl(snake2, "Snake2");
               //Dodanie jablek
                 board.boardLevel.AddToObjectList(new Apple(new Position(5,2), appleConfig));
                 board.boardLevel.AddToObjectList(new Apple(new Position(20,20), new AppleConfiguration(Color.GRAY)));
@@ -50,5 +58,5 @@ public class Program {
             }
         });
 	}
-
+	
 }
