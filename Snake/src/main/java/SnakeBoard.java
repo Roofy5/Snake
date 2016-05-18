@@ -31,7 +31,44 @@ public class SnakeBoard extends JPanel{
 		objects = level.GetMap();	
 		timer = new Timer(250, new TimerTick());
 		timer.setInitialDelay(0);
-		timer.start();
+		initBoard();
+		timer.start();  	
+	}
+	
+	private void initBoard(){
+		setFocusable(true);
+        
+        SnakeConfiguration config = SettingsFactory.GetSnakeConfiguration(new Position(3, 4), Color.GREEN, 'W', 'S', 'A', 'D');
+        TailConfiguration tailConfig = SettingsFactory.GetTailConfiguration(Direction.DOWN, Color.BLUE);
+        
+        Snake snake1 = new Snake(config, tailConfig, boardLevel.GetMap());
+        snake1.AddTail(5);
+
+        boardLevel.AddToObjectList(snake1);   
+        
+        attachControl(snake1, "Snake1");
+        
+      //Dodanie drugiego weza
+        SnakeConfiguration config2 = SettingsFactory.GetSnakeConfiguration(new Position(7, 4), Color.PINK, 'I', 'K', 'J', 'L');
+        TailConfiguration tailConfig2 = SettingsFactory.GetTailConfiguration(Direction.RIGHT, Color.ORANGE);
+        
+        Snake snake2 = new Snake(config2, tailConfig2, boardLevel.GetMap());
+        snake2.AddTail(7);
+
+        boardLevel.AddToObjectList(snake2);   
+        
+        attachControl(snake2, "Snake2");
+
+      //Dodanie jablek
+        AppleConfiguration appleConfig = SettingsFactory.GetAppleConfigration(Color.YELLOW);
+        AppleConfiguration appleConfig2 = SettingsFactory.GetAppleConfigration(Color.GRAY);
+        AppleConfiguration redAppleConfig = SettingsFactory.GetAppleConfigration(Color.RED);
+        
+        boardLevel.AddToObjectList(new Apple(new Position(5,2), appleConfig));
+        boardLevel.AddToObjectList(new Apple(new Position(20,20), appleConfig2));
+        boardLevel.AddToObjectList(new Apple(new Position(15,15), redAppleConfig));
+        
+        repaint();
 	}
 	
 	protected void paintComponent(Graphics g){
@@ -41,17 +78,8 @@ public class SnakeBoard extends JPanel{
 		g2.drawRect(start_x, start_y, width, height);
 		for(DrawableObject ob : objects){
 			Position pos = ob.GetPosition();
-			//System.out.println("X = " + pos.GetX() + " Y = " + pos.GetY());
 			int upperLeftX = start_x + pos.GetX() * size;
 			int upperLeftY = start_y + pos.GetY() * size;
-			/*
-			if(ob instanceof Snake)
-				g2.setColor(Color.GREEN);
-			else if(ob instanceof Tail)
-				g2.setColor(Color.BLACK);
-			else if(ob instanceof Apple)
-				g2.setColor(Color.RED);
-			*/
 			g2.setColor(ob.GetColor()); //nowe ulepszone
 			g2.fillRect(upperLeftX, upperLeftY, size, size);
 		}

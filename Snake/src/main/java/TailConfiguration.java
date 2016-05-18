@@ -21,4 +21,8 @@ public class TailConfiguration {
 	{
 		return color;
 	}
+	
+	public void SetColor(Color color){
+		this.color = color;
+	}
 }

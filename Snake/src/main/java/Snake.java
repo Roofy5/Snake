@@ -32,15 +32,13 @@ public class Snake extends DrawableObject
 		pos = config.GetSettings().GetStartPosition();
 		tails = new ArrayList<Tail>();
 		this.levelMap = levelMap;
+		lastDirection = tailConfig.GetStartDirection().getOppositeDirection();
 	}	
 	
 	public void SetDirection(Direction direction)
 	{
 		if(GetDirection() == null && direction == tailConfig.GetStartDirection() || //Stany zabronione np poruszanie sie 
-			lastDirection == Direction.RIGHT && direction == Direction.LEFT ||		//w calkiem druga strone
-			lastDirection == Direction.LEFT && direction == Direction.RIGHT ||
-			lastDirection == Direction.UP && direction == Direction.DOWN ||
-			lastDirection == Direction.DOWN && direction == Direction.UP)
+			direction == lastDirection.getOppositeDirection())
 			return;
 		this.direction = direction;
 	}
@@ -58,6 +56,10 @@ public class Snake extends DrawableObject
 	public List<Tail> GetTails()
 	{
 		return tails;
+	}
+	
+	public void ChangeTailColor(Color color){
+		tailConfig.SetColor(color);
 	}
 	
 	public void AddTail(Position pos)

@@ -14,5 +14,5 @@ public class Tail extends DrawableObject {
 	{
 		return config.GetColor();
 	}
-
+	
 }

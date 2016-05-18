@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -44,13 +45,9 @@ public class Level{
 	
 	public void RemoveFromObjectList(DrawableObject object)
 	{
-			mapa.remove(object);
+		mapa.remove(object);
 	}
 	
-	public void RemoveFromSnakeList(Snake s) 
-	{
-		listaSnake.remove(s);
-	}
 	public void ClearMap() {}
 	public List<Snake> GetListOfSnakes()
 	{
@@ -116,10 +113,12 @@ public class Level{
 					if(ob instanceof Snake){
 						if(!listaSnake.contains((Snake)ob))
 							snake.UndoMove();
+						snake.ChangeTailColor(Color.LIGHT_GRAY);
 						it.remove();
 					}
 					if(ob instanceof Tail){
 						snake.UndoMove();
+						snake.ChangeTailColor(Color.LIGHT_GRAY);
 						it.remove();
 						
 					}
@@ -133,20 +132,28 @@ public class Level{
 			Snake snake = it.next();
 			Position position = snake.GetPosition();
 			if(snake.GetDirection() == Direction.UP){
-				if(position.GetY() <= 0)
+				if(position.GetY() <= 0){
+					snake.ChangeTailColor(Color.LIGHT_GRAY);
 					it.remove();
+				}
 			}
 			else if(snake.GetDirection() == Direction.DOWN){
-				if(position.GetY() >= sizeY - 1)
+				if(position.GetY() >= sizeY - 1){
+					snake.ChangeTailColor(Color.LIGHT_GRAY);
 					it.remove();
+				}
 			}
 			else if(snake.GetDirection() == Direction.LEFT){
-				if(position.GetX() <= 0) 
+				if(position.GetX() <= 0){
+					snake.ChangeTailColor(Color.LIGHT_GRAY);
 					it.remove();
+				}
 			}
 			else if(snake.GetDirection() == Direction.RIGHT){
-				if(position.GetX() >= sizeX - 1)
+				if(position.GetX() >= sizeX - 1){
+					snake.ChangeTailColor(Color.LIGHT_GRAY);
 					it.remove();
+				}
 			}
 		}
 	}
