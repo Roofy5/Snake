@@ -27,31 +27,43 @@ public class Program {
                 board.setFocusable(true);
                 
                 //Dodanie pierwszego weza
-                SettingsSnake settingsSnake_1 = new SettingsSnake(new Position(3, 4), Color.GREEN);
+                /*SettingsSnake settingsSnake_1 = new SettingsSnake(new Position(3, 4), Color.GREEN);
                 SettingsControl controlSnake_1 = new SettingsControl('W', 'S', 'A', 'D');
                 TailConfiguration tailConfig = new TailConfiguration(Direction.DOWN, Color.BLUE);
                 AppleConfiguration appleConfig = new AppleConfiguration(Color.YELLOW);
                 AppleConfiguration redAppleConfig = new AppleConfiguration(Color.RED);
                 final Snake snake1 = new Snake(new SnakeConfiguration
                 		(settingsSnake_1, controlSnake_1),tailConfig, myLevel.GetMap());
+                */
+                
+                SnakeConfiguration config = SettingsFactory.GetSnakeConfiguration(new Position(3, 4), Color.GREEN, 'W', 'S', 'A', 'D');
+                TailConfiguration tailConfig = SettingsFactory.GetTailConfiguration(Direction.DOWN, Color.BLUE);
+                
+                Snake snake1 = new Snake(config, tailConfig, myLevel.GetMap());
                 snake1.AddTail(5);
+
                 board.boardLevel.AddToObjectList(snake1);   
                 
                 board.attachControl(snake1, "Snake1");
                 
               //Dodanie drugiego weza
-                SettingsSnake settingsSnake_2 = new SettingsSnake(new Position(7, 4), Color.PINK);
-                SettingsControl controlSnake_2 = new SettingsControl('I', 'K', 'J', 'L');
-                TailConfiguration tailConfig2 = new TailConfiguration(Direction.RIGHT, Color.ORANGE);
-                Snake snake2 = new Snake(new SnakeConfiguration
-                		(settingsSnake_2, controlSnake_2),tailConfig2, myLevel.GetMap());
+                SnakeConfiguration config2 = SettingsFactory.GetSnakeConfiguration(new Position(7, 4), Color.PINK, 'I', 'K', 'J', 'L');
+                TailConfiguration tailConfig2 = SettingsFactory.GetTailConfiguration(Direction.RIGHT, Color.ORANGE);
+                
+                Snake snake2 = new Snake(config2, tailConfig2, myLevel.GetMap());
                 snake2.AddTail(7);
+
                 board.boardLevel.AddToObjectList(snake2);   
                 
                 board.attachControl(snake2, "Snake2");
+
               //Dodanie jablek
+                AppleConfiguration appleConfig = SettingsFactory.GetAppleConfigration(Color.YELLOW);
+                AppleConfiguration appleConfig2 = SettingsFactory.GetAppleConfigration(Color.GRAY);
+                AppleConfiguration redAppleConfig = SettingsFactory.GetAppleConfigration(Color.RED);
+                
                 board.boardLevel.AddToObjectList(new Apple(new Position(5,2), appleConfig));
-                board.boardLevel.AddToObjectList(new Apple(new Position(20,20), new AppleConfiguration(Color.GRAY)));
+                board.boardLevel.AddToObjectList(new Apple(new Position(20,20), appleConfig2));
                 board.boardLevel.AddToObjectList(new Apple(new Position(15,15), redAppleConfig));
                 
                 board.repaint();
