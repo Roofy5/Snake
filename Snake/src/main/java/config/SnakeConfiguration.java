@@ -1,9 +1,10 @@
+package config;
 
 public class SnakeConfiguration {
 	private SettingsSnake beginSettings;
 	private SettingsControl control;
 	
-	public SnakeConfiguration(SettingsSnake beginSettings, SettingsControl control)
+	SnakeConfiguration(SettingsSnake beginSettings, SettingsControl control)
 	{
 		this.beginSettings = beginSettings;
 		this.control = control;

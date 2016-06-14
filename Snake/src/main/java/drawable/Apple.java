@@ -1,5 +1,9 @@
+package drawable;
+
+import config.AppleConfiguration;
+import helper.Position;
+
 import java.awt.Color;
-/*XX*/
 
 public class Apple extends DrawableObject 
 {
@@ -10,8 +14,9 @@ public class Apple extends DrawableObject
 		pos = position;
 		this.config = config;
 	}
-	
-	public Color GetColor()
+
+	@Override
+	public Color getColor()
 	{
 		return config.GetColor();
 	}

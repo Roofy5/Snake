@@ -1,3 +1,8 @@
+package config;
+
+import helper.Direction;
+import helper.Position;
+
 import java.awt.Color;
 
 public abstract class SettingsFactory 
@@ -14,7 +19,7 @@ public abstract class SettingsFactory
 		return new TailConfiguration(startDirection, color);
 	}
 	
-	public static AppleConfiguration GetAppleConfigration(Color color)
+	public static AppleConfiguration GetAppleConfiguration(Color color)
 	{
 		return new AppleConfiguration(color);
 	}

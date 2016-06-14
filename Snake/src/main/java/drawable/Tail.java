@@ -1,3 +1,8 @@
+package drawable;
+
+import config.TailConfiguration;
+import helper.Position;
+
 import java.awt.Color;
 
 
@@ -10,9 +15,11 @@ public class Tail extends DrawableObject {
 		this.config = config;
 	}
 	
-	public Color GetColor()
+	public Color getColor()
 	{
 		return config.GetColor();
 	}
+
+
 	
 }

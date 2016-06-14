@@ -1,3 +1,4 @@
+package config;
 
 public class SettingsControl {
 	public char up;
@@ -5,7 +6,7 @@ public class SettingsControl {
 	public char left;
 	public char right;
 
-	public SettingsControl(char u, char d, char l, char r)
+	SettingsControl(char u, char d, char l, char r)
 	{
 		up = u;
 		down = d;
