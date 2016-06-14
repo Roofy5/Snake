@@ -14,7 +14,8 @@ public class Program {
             public void run() {
                 JFrame window = new SnakeFrame();
                 window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-                window.setVisible(true);    
+                window.setVisible(true);
+                //Git/IntellJ test
             }
         });
 	}
