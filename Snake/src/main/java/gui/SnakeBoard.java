@@ -1,15 +1,14 @@
 package gui;
 
-import config.AppleConfiguration;
-import config.SnakeConfiguration;
-import config.TailConfiguration;
+import config.*;
 import drawable.Apple;
 import drawable.DrawableObject;
+import drawable.Head;
 import drawable.Snake;
 import helper.Direction;
+import helper.GraphicType;
 import helper.Position;
 import model.Level;
-import config.SettingsFactory;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -23,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-public class SnakeBoard extends JPanel{
+public class SnakeBoard extends JPanel{/*
 	private static final int START_DELAY = 1000;
 	private Timer timer;
 	private int start_x, start_y, width, height, size;
@@ -38,7 +37,7 @@ public class SnakeBoard extends JPanel{
 		boardLevel = level;
 		width = level.getCountX() * size;
 		height = level.getCountY() * size;
-		objects = level.GetMap();
+		objects = level.getMap();
 		snakeNum = 1;
 		initBoard();
 		timer = new Timer(10, new TimerTick());
@@ -47,34 +46,25 @@ public class SnakeBoard extends JPanel{
 	
 	private void initBoard(){
 		setFocusable(true);
-        
-        SnakeConfiguration config = SettingsFactory.GetSnakeConfiguration(new Position(3, 4), Color.GREEN, 'W', 'S', 'A', 'D');
-        TailConfiguration tailConfig = SettingsFactory.GetTailConfiguration(Direction.DOWN, Color.BLUE);
-        
-        Snake snake1 = new Snake(config, tailConfig, boardLevel.GetMap(), size);
+
+		Snake snake1 = new Snake(new Head(new Position(3, 4)),
+				new SnakeControl('W', 'S', 'A', 'D'), Direction.DOWN, boardLevel.getMap());
 		boardLevel.addSnake(snake1, START_DELAY);
 		snake1.addStartingTails(5);
 
         attachControl(snake1);
         
       //Dodanie drugiego weza
-        SnakeConfiguration config2 = SettingsFactory.GetSnakeConfiguration(new Position(7, 4), Color.PINK, 'I', 'K', 'J', 'L');
-        TailConfiguration tailConfig2 = SettingsFactory.GetTailConfiguration(Direction.RIGHT, Color.ORANGE);
-        
-        Snake snake2 = new Snake(config2, tailConfig2, boardLevel.GetMap(), size);
+		Snake snake2 = new Snake(new Head(new Position(7, 4)),
+				new SnakeControl('I', 'K', 'J', 'L'), Direction.RIGHT, boardLevel.getMap());
 		boardLevel.addSnake(snake2, 100);
 		snake2.addStartingTails(7);
         
         attachControl(snake2);
 
-      //Dodanie jablek
-        AppleConfiguration appleConfig = SettingsFactory.GetAppleConfiguration(Color.YELLOW);
-        AppleConfiguration appleConfig2 = SettingsFactory.GetAppleConfiguration(Color.GRAY);
-        AppleConfiguration redAppleConfig = SettingsFactory.GetAppleConfiguration(Color.RED);
-        
-        boardLevel.addToObjectList(new Apple(new Position(5,2), appleConfig));
-        boardLevel.addToObjectList(new Apple(new Position(20,20), appleConfig2));
-        boardLevel.addToObjectList(new Apple(new Position(15,15), redAppleConfig));
+        boardLevel.addApple(new Position(5,2));
+        boardLevel.addApple(new Position(20,20));
+        boardLevel.addApple(new Position(15,15));
 
         repaint();
 	}
@@ -89,7 +79,7 @@ public class SnakeBoard extends JPanel{
 			Position pos = ob.getPosition();
 			int upperLeftX = start_x + pos.getX() * size;
 			int upperLeftY = start_y + pos.getY() * size;
-			g2.setColor(ob.getColor()); //nowe ulepszone
+			g2.setColor(ob.getGraphic());
 			g2.fillRect(upperLeftX, upperLeftY, size, size);
 		}
 	}
@@ -98,28 +88,28 @@ public class SnakeBoard extends JPanel{
 		getInputMap().put(KeyStroke.getKeyStroke(snake.getSnakeControl().up, 0),"drawable.Snake" + snakeNum + "UP");
         getActionMap().put("drawable.Snake" + snakeNum + "UP",new AbstractAction(){
         	public void actionPerformed(ActionEvent e) {
-               snake.setDirection(Direction.UP);
+               snake.setCurrentDirection(Direction.UP);
             }
         });
         //DOWN
         getInputMap().put(KeyStroke.getKeyStroke(snake.getSnakeControl().down, 0),"drawable.Snake" + snakeNum + "DOWN");
         getActionMap().put("drawable.Snake" + snakeNum + "DOWN",new AbstractAction(){
         	public void actionPerformed(ActionEvent e) {
-               snake.setDirection(Direction.DOWN);
+               snake.setCurrentDirection(Direction.DOWN);
             }
         });
         //LEFT
         getInputMap().put(KeyStroke.getKeyStroke(snake.getSnakeControl().left, 0),"drawable.Snake" + snakeNum + "LEFT");
         getActionMap().put("drawable.Snake" + snakeNum + "LEFT",new AbstractAction(){
         	public void actionPerformed(ActionEvent e) {
-               snake.setDirection(Direction.LEFT);
+               snake.setCurrentDirection(Direction.LEFT);
             }
         });
         //RIGHT
         getInputMap().put(KeyStroke.getKeyStroke(snake.getSnakeControl().right, 0),"drawable.Snake" + snakeNum + "RIGHT");
         getActionMap().put("drawable.Snake" + snakeNum + "RIGHT",new AbstractAction(){
         	public void actionPerformed(ActionEvent e) {
-               snake.setDirection(Direction.RIGHT);
+               snake.setCurrentDirection(Direction.RIGHT);
             }
         });
 		snakeNum++;
@@ -132,5 +122,5 @@ public class SnakeBoard extends JPanel{
 			repaint();
 		}
 		
-	}
+	}*/
 }

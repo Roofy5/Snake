@@ -32,7 +32,7 @@ class SnakeFrame extends JFrame{
 		setSize(800, 400);
 		setLayout(new BorderLayout());
 		Level myLevel = new Level(WIDTH_COUNT, HEIGHT_COUNT); //WYMIARY POLA 60x30
-        SnakeBoard board = new SnakeBoard(START_X, START_Y, SIZE, myLevel);//gorny lewy rog planszy 50px,20px; rozmiar pola 10x10px
-        add(board);
+        //SnakeBoard board = new SnakeBoard(START_X, START_Y, SIZE, myLevel);//gorny lewy rog planszy 50px,20px; rozmiar pola 10x10px
+        //add(board);
 	}
 }

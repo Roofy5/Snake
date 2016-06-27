@@ -1,24 +1,26 @@
 package drawable;
 
-import config.SettingsSnake;
-import config.SnakeConfiguration;
-
-import java.awt.*;
+import helper.Direction;
+import helper.Position;
 
 /**
  * Created by Rafal on 14.06.2016.
  */
 public class Head extends DrawableObject{
 
-    private SettingsSnake snakeSettings;
+    private Direction currentDirection;
 
-    public Head(SettingsSnake settings){
-        pos = settings.GetStartPosition();
-        this.snakeSettings = settings;
+    public Head(Position position){
+        pos = position;
+        currentDirection = Direction.NONE;
     }
 
-    public Color getColor()
-    {
-        return snakeSettings.GetColor();
+    public Direction getDirection(){
+        return currentDirection;
     }
+
+    public void setDirection(Direction dir){
+        currentDirection = dir;
+    }
+
 }

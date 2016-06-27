@@ -1,80 +1,95 @@
 package drawable;
 
-import config.SettingsControl;
-import config.SnakeConfiguration;
-import config.TailConfiguration;
+import config.*;
 import helper.Direction;
 import helper.Position;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Snake
 {
+	private static int snakeCounter = 1;
+	private int snakeID;
 	private List <DrawableObject> levelMap;
-	private Direction direction;
-	private SettingsControl snakeControl;
-	private TailConfiguration tailConfig;
-	private Direction lastDirection = null;
-	private List<Tail> tails;
+	private Direction startDirection;
+	private SnakeControl snakeControl;
+	private Direction lastDirection = Direction.NONE;
+	private List<Block> blocks;
 	private Head head;
 	private Position lastTail; //poprzednia pozycja konca ogona(mozliwosc wycofania ruchu)
 	public boolean isDead;
 
-	public Snake(SnakeConfiguration config, TailConfiguration tailConfig, List<DrawableObject> levelMap, int blockSize)
+	public Snake(Head head, SnakeControl snakeControl, Direction startDirection, List<DrawableObject> levelMap)
 	{
-		this.tailConfig = tailConfig;
-		this.head = new Head(config.GetSettings());
-		this.snakeControl = config.GetControl();
-		tails = new ArrayList<Tail>();
+		this.startDirection = startDirection;
+		this.head = head;
+		this.snakeControl = snakeControl;
+		blocks = new ArrayList<>();
 		this.levelMap = levelMap;
 		isDead = false;
+		snakeID = snakeCounter++;
 	}
+
+	public static void cleanCount(){snakeCounter = 1;}
 
 	public Head getHead() {
 		return head;
 	}
 
-	public SettingsControl getSnakeControl() {
+	public SnakeControl getSnakeControl() {
 		return snakeControl;
 	}
 
-	public Direction getDirection() {
-		return direction;
+	public Direction getCurrentDirection() {
+		return head.getDirection();
 	}
 
-	public void setDirection(Direction direction)
+	public Direction getStartDirection() {
+		return startDirection;
+	}
+
+	public int getSnakeID(){
+		return snakeID;
+	}
+
+	public void setCurrentDirection(Direction currentDirection)
 	{
-		if(this.direction == null && direction == tailConfig.GetStartDirection() || //Stany zabronione np poruszanie sie
-			lastDirection != null && direction == lastDirection.getOppositeDirection())
+		if(head.getDirection() == Direction.NONE && currentDirection == startDirection || //Stany zabronione
+			lastDirection != Direction.NONE && currentDirection == lastDirection.getOppositeDirection())
 			return;
-		this.direction = direction;
+		head.setDirection(currentDirection);
+	}
+
+	public boolean hasPart(DrawableObject part){
+		if(blocks.contains(part) || getHead() == part)
+			return true;
+		return false;
 	}
 
 	public void setDead(){
-		tailConfig.SetColor(Color.LIGHT_GRAY);
 		isDead = true;
 	}
 
 	private void addTailByPosition(Position pos)
 	{
-		Tail tail = new Tail(pos, tailConfig);
-		tails.add(tail);
-		levelMap.add(tail);
+		Block block = new Block(pos);
+		blocks.add(block);
+		levelMap.add(block);
 	}
 
-	public void appendTail(){
+	public void appendTail()
+	{
 		addTailByPosition(lastTail);
 	}
 
 	private void addTailDefault(){
-		Direction dir = tailConfig.GetStartDirection();
+		Direction dir = startDirection;
 		Position oldPosition;
 		Position newPosition;
-		if(tails.size() > 0)
-			oldPosition = tails.get(tails.size() - 1).getPosition();
+		if(blocks.size() > 0)
+			oldPosition = blocks.get(blocks.size() - 1).getPosition();
 		else
 			oldPosition = head.getPosition();
 
@@ -98,21 +113,23 @@ public class Snake
 	}
 	
 	public void addStartingTails(int n){
-		for(;n > 0; n--)
+		for(;n > 1; n--)
 			addTailDefault();
+		addTailDefault();
+		updatePartDirections();
 	}
 
 	private void undoTail(){
 		int i;
-		for(i = 0; i < tails.size() - 1; i++){//cofamy elementy ogona
-			tails.get(i).updatePosition(tails.get(i + 1).getPosition());
+		for(i = 0; i < blocks.size() - 1; i++){//cofamy elementy ogona
+			blocks.get(i).updatePosition(blocks.get(i + 1).getPosition());
 		}
-		if(tails.size() > 0)
-			tails.get(i).updatePosition(lastTail);
+		if(blocks.size() > 0)
+			blocks.get(i).updatePosition(lastTail);
 	}
 	
 	private void undoHead(){
-		switch(this.direction){
+		switch(head.getDirection()){
 			case UP:
 				head.updatePosition(new Position(head.getPosition().getX(), head.getPosition().getY()+1));
 				break;
@@ -134,40 +151,87 @@ public class Snake
 	{
 		undoHead();
 		undoTail();
+		updatePartDirections();
 	}
 
 	private void moveHead(){//Ruszamy glowa drawable.Snake'a
-		if(direction == Direction.UP)
+		if(head.getDirection() == Direction.UP)
 			head.updatePosition(new Position(head.getPosition().getX(), head.getPosition().getY()-1));
-		else if(direction == Direction.DOWN)
+		else if(head.getDirection() == Direction.DOWN)
 			head.updatePosition(new Position(head.getPosition().getX(), head.getPosition().getY()+1));
-		else if(direction == Direction.LEFT)
+		else if(head.getDirection() == Direction.LEFT)
 			head.updatePosition(new Position(head.getPosition().getX()-1, head.getPosition().getY()));
-		else if(direction == Direction.RIGHT)
+		else if(head.getDirection() == Direction.RIGHT)
 			head.updatePosition(new Position(head.getPosition().getX()+1, head.getPosition().getY()));
 	}
 
 	private void moveTail(){
 		int i;
-		for(i = tails.size() - 1; i >= 1; i--){//Ruszamy elementami ogona
-			tails.get(i).updatePosition(tails.get(i - 1).getPosition());
+		for(i = blocks.size() - 1; i >= 1; i--){//Ruszamy elementami ogona
+			blocks.get(i).updatePosition(blocks.get(i - 1).getPosition());
 		}
 
 		if(i == 0)//1. element ogona w miejsce glowy jesli istnieje
-			tails.get(i).updatePosition(head.getPosition());
+			blocks.get(i).updatePosition(head.getPosition());
 	}
 
 	public void move(){
-		if(this.direction == null)
+		if(head.getDirection() == Direction.NONE)
 			return;
 
-		if(tails.size() > 0)//Zapisujemy pozycje ostatniego elementu ogona w razie potrzeby
-			lastTail = tails.get(tails.size() - 1).getPosition();
+		if(blocks.size() > 0)//Zapisujemy pozycje ostatniego elementu ogona w razie potrzeby
+			lastTail = blocks.get(blocks.size() - 1).getPosition();
 		else
 			lastTail = head.getPosition();
 
 		moveTail();
 		moveHead();
-		lastDirection = this.direction;
+		updatePartDirections();
+		lastDirection = head.getDirection();
+	}
+
+	public void updatePartDirections(){
+		int xDiff, yDiff, xPrevDiff, yPrevDiff;
+		Direction currDirection, prevDirection;
+		for(int i = 0; i < blocks.size(); i++){
+			xPrevDiff = yPrevDiff = 0;
+			if(i == 0){
+				xDiff = head.getPosition().getX() - blocks.get(i).getPosition().getX();
+				yDiff = head.getPosition().getY() - blocks.get(i).getPosition().getY();
+			}
+			else {
+				xDiff = blocks.get(i - 1).getPosition().getX() - blocks.get(i).getPosition().getX();
+				yDiff = blocks.get(i - 1).getPosition().getY() - blocks.get(i).getPosition().getY();
+			}
+			if(i < blocks.size() - 1) {
+				xPrevDiff = blocks.get(i).getPosition().getX() - blocks.get(i + 1).getPosition().getX();
+				yPrevDiff = blocks.get(i).getPosition().getY() - blocks.get(i + 1).getPosition().getY();
+			}
+
+			if(xDiff > 0 && yDiff == 0)
+				currDirection = Direction.RIGHT;
+			else if(xDiff < 0 && yDiff == 0)
+				currDirection = Direction.LEFT;
+			else if(xDiff == 0 && yDiff > 0)
+				currDirection = Direction.DOWN;
+			else if(xDiff == 0 && yDiff < 0)
+				currDirection = Direction.UP;
+			else
+				currDirection = Direction.NONE;
+
+			if(xPrevDiff > 0 && yPrevDiff == 0)
+				prevDirection = Direction.RIGHT;
+			else if(xPrevDiff < 0 && yPrevDiff == 0)
+				prevDirection = Direction.LEFT;
+			else if(xPrevDiff == 0 && yPrevDiff > 0)
+				prevDirection = Direction.DOWN;
+			else if(xPrevDiff == 0 && yPrevDiff < 0)
+				prevDirection = Direction.UP;
+			else
+				prevDirection = Direction.NONE;
+
+			blocks.get(i).setCurrDirection(currDirection);
+			blocks.get(i).setPrevDirection(prevDirection);
+		}
 	}
 }

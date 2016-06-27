@@ -1,6 +1,9 @@
 package model;
 
+import config.AbstractControlFactory;
+import config.SnakeControl;
 import drawable.*;
+import helper.Direction;
 import helper.Position;
 
 import javax.swing.Timer;
@@ -35,11 +38,16 @@ public class Level{
 		return countX;
 	}
 
-	public List<DrawableObject> GetMap()
+	public List<DrawableObject> getMap()
 	{
 		return map;
 	}
-	
+
+	public List<Snake> getSnakes()
+	{
+		return snakeList;
+	}
+
 	public void addToObjectList(DrawableObject object){
 		map.add(object);
 
@@ -49,6 +57,7 @@ public class Level{
 
 	public void addSnake(Snake snake, int delay){
 		snakeList.add(snake);
+
 		final Timer timer = new Timer(delay, (event) ->
 		{if(!snakeList.contains(snake)) {
 			((Timer)event.getSource()).stop();
@@ -63,12 +72,67 @@ public class Level{
 		addToObjectList(snake.getHead());
 	}
 
-	private void RemoveFromAppleList(Apple apple)
+	public void addApple(Position pos){
+		addToObjectList(new Apple(pos));
+	}
+
+	private void addPlayer(Position pos, int startLength, int startDelay, Direction startDir, SnakeControl control){
+		Snake snake1 = new Snake(new Head(pos),control,
+				startDir, getMap());
+		snake1.addStartingTails(startLength);
+		addSnake(snake1, startDelay);
+	}
+
+	public void addPlayers(int num, int startLength, int startDelay, AbstractControlFactory factory){
+		switch(num){
+			case 1:
+				addPlayer(new Position(countX/2, countY/2), startLength, startDelay, Direction.LEFT,
+						factory.getPlayer1Control());
+				break;
+			case 2:
+				addPlayer(new Position(countX/4, countY/4), startLength, startDelay, Direction.LEFT,
+						factory.getPlayer1Control());
+
+				addPlayer(new Position(countX - countX/4, countY - countY/4), startLength, startDelay, Direction.RIGHT,
+						factory.getPlayer2Control());
+
+			break;
+			case 3:
+				addPlayer(new Position(countX/4, countY/4), startLength, startDelay, Direction.LEFT,
+						factory.getPlayer1Control());
+
+				addPlayer(new Position(countX - countX/4, countY - countY/4), startLength, startDelay, Direction.RIGHT,
+						factory.getPlayer2Control());
+
+				addPlayer(new Position(countX/4, countY - countY/4), startLength, startDelay, Direction.LEFT,
+						factory.getPlayer3Control());
+
+				break;
+			case 4:
+				addPlayer(new Position(countX/4, countY/4), startLength, startDelay, Direction.LEFT,
+						factory.getPlayer1Control());
+
+				addPlayer(new Position(countX - countX/4, countY - countY/4), startLength, startDelay, Direction.RIGHT,
+						factory.getPlayer2Control());
+
+				addPlayer(new Position(countX/4, countY - countY/4), startLength, startDelay, Direction.LEFT,
+						factory.getPlayer3Control());
+
+				addPlayer(new Position(countX - countX/4, countY/4), startLength, startDelay, Direction.RIGHT,
+						factory.getPlayer4Control());
+				break;
+
+			default:
+				break;
+		}
+	}
+
+	private void removeFromAppleList(Apple apple)
 	{
 		apples.remove(apple);
 	}
 	
-	private void RemoveFromObjectList(DrawableObject object)
+	private void removeFromObjectList(DrawableObject object)
 	{
 		map.remove(object);
 	}
@@ -88,7 +152,7 @@ public class Level{
 		return null;
 	}
 
-	private void GenerateApples(){
+	private void generateApples(){
 		while(map.size() >= (countX * countY) && decreaseAppleCount()){}
 			 // pelna map - usuwamy czesc jablek aby zrobic miejsce
 
@@ -117,14 +181,14 @@ public class Level{
 	private boolean decreaseAppleCount(){
 		for(Apple apple : apples)
 			if(apple.eaten){
-				RemoveFromObjectList(apple);
-				RemoveFromAppleList(apple);
+				removeFromObjectList(apple);
+				removeFromAppleList(apple);
 				return true;
 			}
 		return false;
 	}
 
-	private void GrowSnakes(){
+	private void growSnakes(){
 		for(Apple apple : apples){
 			for(Snake snake : snakeList)
 				if(collide(snake.getHead(), apple)){
@@ -137,7 +201,7 @@ public class Level{
 		}
 	}
 
-	private void CheckSnakeCollisions(){
+	private void checkSnakeCollisions(){
 		Snake snake;
 		Snake tempSnake;
 		for(Iterator<Snake> it = snakeList.iterator(); it.hasNext();){
@@ -148,12 +212,12 @@ public class Level{
 					if(ob instanceof Head){
 						Head head = (Head)ob;
 						tempSnake = findSnakeByHead(head);
-						if(tempSnake == null || (tempSnake.getDirection() == null) || tempSnake.isDead){
+						if(tempSnake == null || (tempSnake.getCurrentDirection() == Direction.NONE) || tempSnake.isDead){
 							snake.undoMove();
 						}
 						snake.setDead();
 					}
-					if(ob instanceof Tail){
+					if(ob instanceof Block){
 						snake.undoMove();
 						snake.setDead();
 					}
@@ -162,7 +226,7 @@ public class Level{
 		}
 	}
 	
-	private void CheckSnakesInBoard(){
+	private void checkSnakesInBoard(){
 		Position snakePosition;
 		for(Snake snake : snakeList){
 			snakePosition = snake.getHead().getPosition();
@@ -189,11 +253,11 @@ public class Level{
 	}
 
 	private void checkBoardState() {
-		CheckSnakesInBoard();
-		GrowSnakes();
-		CheckSnakeCollisions();
+		checkSnakesInBoard();
+		growSnakes();
+		checkSnakeCollisions();
 		deleteDeadSnakes();
-		GenerateApples();
+		generateApples();
 	}
 	
 }
