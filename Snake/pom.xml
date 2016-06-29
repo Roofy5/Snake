@@ -22,5 +22,5 @@
       <version>4.11</version>
     </dependency>
   </dependencies>
-  <name>drawable.Snake</name>
+  <name>model.logic.Snake</name>
 </project>
