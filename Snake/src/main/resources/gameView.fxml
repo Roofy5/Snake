@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.canvas.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import java.net.URL?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
+<AnchorPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
    <children>
       <HBox layoutX="82.0" layoutY="14.0" prefHeight="26.0" prefWidth="400.0">
          <children>
@@ -26,7 +28,7 @@
                   <Insets right="50.0" />
                </HBox.margin>
             </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player4:">
+            <Text fx:id="actionTarget" strokeType="OUTSIDE" strokeWidth="0.0" text="Player4:">
                <HBox.margin>
                   <Insets right="50.0" />
                </HBox.margin>
@@ -34,7 +36,9 @@
          </children>
       </HBox>
       <Button layoutX="539.0" layoutY="15.0" mnemonicParsing="false" onAction="#switchToMenuMode" text="Menu" />
-      <Button layoutX="532.0" layoutY="347.0" mnemonicParsing="false" onAction="#drawOnCanvas" text="rysuj" />
-      <Canvas fx:id="gameCanvas" height="300.0" layoutX="48.0" layoutY="56.0" width="450.0" />
+      <Canvas height="300.0" layoutX="50.0" layoutY="50.0" width="450.0" fx:id="gameCanvas" />
    </children>
+   <stylesheets>
+      <URL value="@gameStyle.css" />
+   </stylesheets>
 </AnchorPane>

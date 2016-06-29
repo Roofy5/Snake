@@ -15,8 +15,11 @@ public class MenuController{
     @FXML
     public void switchToGameMode(ActionEvent actionEvent) throws Exception{
         Stage mainStage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("gameView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("gameView.fxml"));
+        Parent parent = loader.load();
         Scene scene = new Scene(parent, 800, 500);
+        GameController gameController = loader.getController();
+        gameController.attachKeys(scene);
         mainStage.setScene(scene);
         mainStage.show();
     }

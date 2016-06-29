@@ -1,26 +1,6 @@
 package gui;
 
-import config.*;
-import drawable.Apple;
-import drawable.DrawableObject;
-import drawable.Head;
-import drawable.Snake;
-import helper.Direction;
-import helper.GraphicType;
-import helper.Position;
-import model.Level;
-
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.List;
-
-import javax.swing.AbstractAction;
 import javax.swing.JPanel;
-import javax.swing.KeyStroke;
-import javax.swing.Timer;
 
 public class SnakeBoard extends JPanel{/*
 	private static final int START_DELAY = 1000;
@@ -62,9 +42,9 @@ public class SnakeBoard extends JPanel{/*
         
         attachControl(snake2);
 
-        boardLevel.addApple(new Position(5,2));
-        boardLevel.addApple(new Position(20,20));
-        boardLevel.addApple(new Position(15,15));
+        boardLevel.addFruit(new Position(5,2));
+        boardLevel.addFruit(new Position(20,20));
+        boardLevel.addFruit(new Position(15,15));
 
         repaint();
 	}
