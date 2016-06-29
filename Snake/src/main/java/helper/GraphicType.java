@@ -1,10 +1,8 @@
 package helper;
 
-import drawable.*;
+import model.drawable.*;
 
-/**
- * Created by Rafal on 15.06.2016.
- */
+
 public enum GraphicType {
     APPLE, HEAD, DEAD, TAIL, PEAR, INVIS, BLOCK, TURN, NONE;
 

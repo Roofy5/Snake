@@ -1,8 +1,6 @@
-package config;
+package model.factories;
 
-/**
- * Created by Rafal on 25.06.2016.
- */
+
 public class FixedControlFactory extends AbstractControlFactory{
     public SnakeControl getPlayer1Control(){
         return new SnakeControl("W", "S", "A", "D");

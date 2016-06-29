@@ -1,4 +1,4 @@
-package config;
+package model.factories;
 
 public class SnakeControl {
 	public String up, down, left, right;

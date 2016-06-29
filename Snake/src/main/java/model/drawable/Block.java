@@ -1,4 +1,4 @@
-package drawable;
+package model.drawable;
 
 import helper.Direction;
 import helper.Position;

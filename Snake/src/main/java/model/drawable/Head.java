@@ -1,11 +1,8 @@
-package drawable;
+package model.drawable;
 
 import helper.Direction;
 import helper.Position;
 
-/**
- * Created by Rafal on 14.06.2016.
- */
 public class Head extends DrawableObject{
 
     private Direction currentDirection;

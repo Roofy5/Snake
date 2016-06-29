@@ -1,8 +1,8 @@
 package controller;
 
-import config.FixedControlFactory;
-import config.SnakeControl;
-import drawable.Snake;
+import model.factories.FixedControlFactory;
+import model.factories.SnakeControl;
+import model.logic.Snake;
 import helper.Direction;
 import helper.SnakeState;
 import javafx.animation.Animation;
@@ -20,22 +20,20 @@ import javafx.scene.canvas.Canvas;
 
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import model.Level;
+import model.logic.Level;
 import view.GameView;
 
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * Created by Rafal on 22.06.2016.
- */
 public class GameController implements Initializable {
 
     private Level gameLevel;
     private GameView gameView;
     private Timeline[] timelines;
-    private int init_delay;
-    private int delay_diff;
+    private int initDelay;
+    private int delayDiff;
+    private int minDelay;
     @FXML private Canvas gameCanvas;
 
     @FXML
@@ -47,8 +45,8 @@ public class GameController implements Initializable {
         mainStage.show();
     }
 
-    private int calculateDelay(int size){
-        return init_delay - size * delay_diff;
+    private int calculateDelay(int currDelay, int size){
+        return (int)(currDelay - (delayDiff/(size / 6.0)));
     }
 
     @Override
@@ -59,12 +57,13 @@ public class GameController implements Initializable {
         int player_count = 4;
         int start_size = 1;
         int start_delay = 5000;
-        init_delay = 275;
-        delay_diff = 5;
+        initDelay = 250;
+        delayDiff = 10;
+        minDelay = 20;
         Snake.cleanCount();
         gameLevel = new Level(width_count, height_count);
         gameLevel.addPlayers(player_count, start_size, new FixedControlFactory());
-        gameLevel.addFruits(3);
+        gameLevel.addFruits(4);
         gameCanvas.setWidth(width_count * block_size);
         gameCanvas.setHeight(height_count * block_size);
         gameView = new GameView(gameLevel.getMap(), gameLevel.getSnakes(), gameCanvas, block_size, width_count, height_count);
@@ -75,9 +74,8 @@ public class GameController implements Initializable {
     private void initTimelines(int player_count, int start_delay){
         timelines = new Timeline[player_count];
         for(int i = 0; i < player_count; i++) {
-            Snake tempSnake = gameLevel.getSnakeByID(i+1);
-            timelines[i] = new Timeline(new KeyFrame(Duration.ZERO, new TimeHandler(i + 1)),
-                    new KeyFrame(Duration.millis(calculateDelay(tempSnake.getSize()))));
+            timelines[i] = new Timeline(new KeyFrame(Duration.ZERO, new TimeHandler(i + 1, initDelay)),
+                    new KeyFrame(Duration.millis(initDelay)));
             timelines[i].setCycleCount(Animation.INDEFINITE);
         }
         Timeline startTimeline = new Timeline(new KeyFrame(Duration.millis(start_delay), ev -> {
@@ -105,7 +103,7 @@ public class GameController implements Initializable {
                 else if (snakeControl.right.equals(keyEvent.getCode().toString()))
                     tempDir = Direction.RIGHT;
                 if(tempDir != Direction.NONE){
-                    if(snake.setCurrentDirection(tempDir));
+                    if(snake.setCurrentDirection(tempDir))
                         timelines[snake.getSnakeID()-1].play();
                 }
             }
@@ -120,7 +118,8 @@ public class GameController implements Initializable {
     private class TimeHandler implements EventHandler<ActionEvent>{
 
         private int version;
-        public TimeHandler(int version){this.version = version;}
+        private int lastDelay;
+        public TimeHandler(int version, int lastDelay){this.version = version; this.lastDelay = lastDelay;}
         @Override
         public void handle(ActionEvent event) {
             int prevSize;
@@ -133,13 +132,25 @@ public class GameController implements Initializable {
                         Timeline invisibilityTimeline = new Timeline(new KeyFrame(Duration.millis(1000), ev -> {
                             if (tempSnake.getSnakeState() == SnakeState.INVISIBLE)
                                 tempSnake.setSnakeState(SnakeState.NORMAL);
+                            gameView.drawSnakeOnCanvas(version);
                         }));
                         invisibilityTimeline.play();
                     }
-                    timelines[version-1].stop();
-                    timelines[version-1].getKeyFrames().setAll(new
-                            KeyFrame(Duration.millis(calculateDelay(tempSnake.getSize())), new TimeHandler(version)));
-                    timelines[version-1].play();
+                    if(lastDelay > minDelay) {
+                        timelines[version - 1].stop();
+                        int currDelay = calculateDelay(lastDelay, tempSnake.getSize());
+                        timelines[version - 1].getKeyFrames().setAll(new
+                                KeyFrame(Duration.millis(currDelay),
+                                new TimeHandler(version, currDelay)));
+                        timelines[version - 1].play();
+                        System.out.println(currDelay);
+                    }
+                    if(gameLevel.getEatenFruitsCount() > 50)
+                        gameLevel.setMaxFruitCount(1);
+                    else if(gameLevel.getEatenFruitsCount() > 30)
+                        gameLevel.setMaxFruitCount(2);
+                    else if(gameLevel.getEatenFruitsCount() > 10)
+                        gameLevel.setMaxFruitCount(3);
 
                 }
             }

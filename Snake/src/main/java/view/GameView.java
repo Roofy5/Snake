@@ -1,10 +1,9 @@
 package view;
 
-import config.ImageFactory;
-import drawable.Block;
-import drawable.DrawableObject;
-import drawable.Head;
-import drawable.Snake;
+import model.drawable.Block;
+import model.drawable.DrawableObject;
+import model.drawable.Head;
+import model.logic.Snake;
 import helper.Direction;
 import helper.GraphicType;
 import helper.Position;
@@ -21,9 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Rafal on 25.06.2016.
- */
 public class GameView{
     private List<DrawableObject> levelMap;
     private List<Snake> snakeList;

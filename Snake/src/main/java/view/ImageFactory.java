@@ -1,11 +1,8 @@
-package config;
+package view;
 
 import helper.GraphicType;
 import javafx.scene.image.Image;
 
-/**
- * Created by Rafal on 25.06.2016.
- */
 public class ImageFactory {
     private static final Image[] deadImage = {new Image("v1/dead.png"), new Image("v2/dead.png"), new Image("v3/dead.png"), new Image("v4/dead.png")};
     private static final Image[] headImage = {new Image("v1/head.png"), new Image("v2/head.png"), new Image("v3/head.png"), new Image("v4/head.png")};

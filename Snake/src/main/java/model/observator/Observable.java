@@ -1,10 +1,7 @@
-package observator;
+package model.observator;
 
-import drawable.DrawableObject;
+import model.drawable.DrawableObject;
 
-/**
- * Created by Rafal on 28.06.2016.
- */
 public interface Observable {
     void addObserver(Observer obs);
     void deleteObserver(Observer obs);

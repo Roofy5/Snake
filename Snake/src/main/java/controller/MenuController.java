@@ -8,9 +8,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/**
- * Created by Rafal on 22.06.2016.
- */
 public class MenuController{
     @FXML
     public void switchToGameMode(ActionEvent actionEvent) throws Exception{

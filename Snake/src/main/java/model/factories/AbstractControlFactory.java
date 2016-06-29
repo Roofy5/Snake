@@ -1,8 +1,5 @@
-package config;
+package model.factories;
 
-/**
- * Created by Rafal on 25.06.2016.
- */
 public abstract class AbstractControlFactory {
     public abstract SnakeControl getPlayer1Control();
     public abstract SnakeControl getPlayer2Control();

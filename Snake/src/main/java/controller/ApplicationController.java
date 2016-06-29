@@ -8,9 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
-/**
- * Created by Rafal on 18.06.2016.
- */
 public class ApplicationController extends Application{
     public static void main(String[] args) {
         launch(args);

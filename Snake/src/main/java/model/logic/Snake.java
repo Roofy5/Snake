@@ -1,11 +1,14 @@
-package drawable;
+package model.logic;
 
-import config.*;
+import model.factories.*;
+import model.drawable.Block;
+import model.drawable.DrawableObject;
+import model.drawable.Head;
 import helper.Direction;
 import helper.Position;
 import helper.SnakeState;
-import observator.Observable;
-import observator.Observer;
+import model.observator.Observable;
+import model.observator.Observer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -86,9 +89,7 @@ public class Snake implements Observable
 	public int getSize() { return blocks.size() + 1;}
 
 	public boolean isRunning() {
-		if(getCurrentDirection() == Direction.NONE)
-			return false;
-		return true;
+		return getCurrentDirection() != Direction.NONE;
 	}
 
 	public boolean isDead(){return head.isDead();}
@@ -122,9 +123,7 @@ public class Snake implements Observable
 	}
 
 	public boolean hasPart(DrawableObject part){
-		if(blocks.contains(part) || getHead() == part)
-			return true;
-		return false;
+		return blocks.contains(part) || getHead() == part;
 	}
 
 	public void setDead(){
@@ -155,19 +154,19 @@ public class Snake implements Observable
 
 		switch(dir){
 			case UP:
-				newPosition = new Position(oldPosition.getX(), oldPosition.getY() - 1);
+				newPosition = PositionFactory.getPosition(oldPosition.getX(), oldPosition.getY() - 1);
 				break;
 			case DOWN:
-				newPosition = new Position(oldPosition.getX(), oldPosition.getY() + 1);
+				newPosition = PositionFactory.getPosition(oldPosition.getX(), oldPosition.getY() + 1);
 				break;
 			case LEFT:
-				newPosition = new Position(oldPosition.getX() - 1, oldPosition.getY());
+				newPosition = PositionFactory.getPosition(oldPosition.getX() - 1, oldPosition.getY());
 				break;
 			case RIGHT:
-				newPosition = new Position(oldPosition.getX() + 1, oldPosition.getY());
+				newPosition = PositionFactory.getPosition(oldPosition.getX() + 1, oldPosition.getY());
 				break;
 			default:
-				newPosition = new Position(oldPosition.getX() - 1, oldPosition.getY());
+				newPosition = PositionFactory.getPosition(oldPosition.getX() - 1, oldPosition.getY());
 		}
 		addTailByPosition(newPosition);
 	}
@@ -189,16 +188,16 @@ public class Snake implements Observable
 	private void undoHead(){
 		switch(head.getDirection()){
 			case UP:
-				head.updatePosition(new Position(head.getPosition().getX(), head.getPosition().getY()+1));
+				head.updatePosition(PositionFactory.getPosition(head.getPosition().getX(), head.getPosition().getY()+1));
 				break;
 			case DOWN:
-				head.updatePosition(new Position(head.getPosition().getX(), head.getPosition().getY()-1));
+				head.updatePosition(PositionFactory.getPosition(head.getPosition().getX(), head.getPosition().getY()-1));
 				break;
 			case LEFT:
-				head.updatePosition(new Position(head.getPosition().getX()+1, head.getPosition().getY()));
+				head.updatePosition(PositionFactory.getPosition(head.getPosition().getX()+1, head.getPosition().getY()));
 				break;
 			case RIGHT:
-				head.updatePosition(new Position(head.getPosition().getX()-1, head.getPosition().getY()));
+				head.updatePosition(PositionFactory.getPosition(head.getPosition().getX()-1, head.getPosition().getY()));
 				break;
 			default:
 				break;
@@ -212,15 +211,15 @@ public class Snake implements Observable
 		updatePartDirections();
 	}
 
-	private void moveHead(){//Ruszamy glowa drawable.Snake'a
+	private void moveHead(){//Ruszamy glowa model.logic.Snake'a
 		if(head.getDirection() == Direction.UP)
-			head.updatePosition(new Position(head.getPosition().getX(), head.getPosition().getY()-1));
+			head.updatePosition(PositionFactory.getPosition(head.getPosition().getX(), head.getPosition().getY()-1));
 		else if(head.getDirection() == Direction.DOWN)
-			head.updatePosition(new Position(head.getPosition().getX(), head.getPosition().getY()+1));
+			head.updatePosition(PositionFactory.getPosition(head.getPosition().getX(), head.getPosition().getY()+1));
 		else if(head.getDirection() == Direction.LEFT)
-			head.updatePosition(new Position(head.getPosition().getX()-1, head.getPosition().getY()));
+			head.updatePosition(PositionFactory.getPosition(head.getPosition().getX()-1, head.getPosition().getY()));
 		else if(head.getDirection() == Direction.RIGHT)
-			head.updatePosition(new Position(head.getPosition().getX()+1, head.getPosition().getY()));
+			head.updatePosition(PositionFactory.getPosition(head.getPosition().getX()+1, head.getPosition().getY()));
 	}
 
 	private void moveTail(){

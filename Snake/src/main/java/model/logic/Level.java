@@ -1,8 +1,9 @@
-package model;
+package model.logic;
 
-import config.AbstractControlFactory;
-import config.SnakeControl;
-import drawable.*;
+import model.factories.AbstractControlFactory;
+import model.factories.PositionFactory;
+import model.factories.SnakeControl;
+import model.drawable.*;
 import helper.Direction;
 import helper.Position;
 import helper.SnakeState;
@@ -11,28 +12,35 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class Level implements observator.Observer{
+public class Level implements model.observator.Observer{
 
 	private int countX;
 	private int countY;
 	private int maxFruitCount;
+	private int eatenFruitsCount;
 	private List <Snake> movableSnakes;
 	private List <Snake> deadSnakes;
 	private List <DrawableObject> map;
 	private List <Fruit> fruits;
 	private List <Fruit> eatenFruits;
 	private Random randomGenerator;
+
 	public Level(int countX, int countY)
 	{
 		this.countX = countX;
 		this.countY = countY;
 		this.maxFruitCount = 5;
+		this.eatenFruitsCount = 0;
 		map = new ArrayList<>();
 		movableSnakes = new LinkedList<>();
 		fruits = new ArrayList<>();
 		eatenFruits = new ArrayList<>();
 		randomGenerator = new Random();
 		deadSnakes = new ArrayList<>();
+	}
+
+	public int getEatenFruitsCount() {
+		return eatenFruitsCount;
 	}
 
 	public List<DrawableObject> getMap()
@@ -61,6 +69,10 @@ public class Level implements observator.Observer{
 		maxFruitCount = count;
 	}
 
+	public void decreaseMaxFruitCount(){
+		maxFruitCount -= 1;
+	}
+
 	public void addToObjectList(DrawableObject object){
 		map.add(object);
 	}
@@ -80,14 +92,13 @@ public class Level implements observator.Observer{
 	private Fruit generateFruit(){
 		int maxRand = 50;
 		int randNum = randomGenerator.nextInt(maxRand);
-		Position tempPos = new Position(0,0);
 		Fruit fruit;
 		if(randNum < 10)
-			fruit = new Invis(tempPos);
-		else if(randNum > 39)
-			fruit = new Pear(tempPos);
+			fruit = new Invis();
+		else if(randNum > 44)
+			fruit = new Pear();
 		else
-			fruit = new Apple(tempPos);
+			fruit = new Apple();
 		return fruit;
 	}
 
@@ -105,39 +116,39 @@ public class Level implements observator.Observer{
 	public void addPlayers(int num, int startLength, AbstractControlFactory factory){
 		switch(num){
 			case 1:
-				addPlayer(new Position(countX/2, countY/2), startLength, Direction.LEFT,
+				addPlayer(PositionFactory.getPosition(countX/2, countY/2), startLength, Direction.LEFT,
 						factory.getPlayer1Control());
 				break;
 			case 2:
-				addPlayer(new Position(countX/4, countY/4), startLength, Direction.LEFT,
+				addPlayer(PositionFactory.getPosition(countX/4, countY/4), startLength, Direction.LEFT,
 						factory.getPlayer1Control());
 
-				addPlayer(new Position(countX - countX/4, countY - countY/4), startLength, Direction.RIGHT,
+				addPlayer(PositionFactory.getPosition(countX - countX/4, countY - countY/4), startLength, Direction.RIGHT,
 						factory.getPlayer2Control());
 
 			break;
 			case 3:
-				addPlayer(new Position(countX/4, countY/4), startLength, Direction.LEFT,
+				addPlayer(PositionFactory.getPosition(countX/4, countY/4), startLength, Direction.LEFT,
 						factory.getPlayer1Control());
 
-				addPlayer(new Position(countX - countX/4, countY - countY/4), startLength, Direction.RIGHT,
+				addPlayer(PositionFactory.getPosition(countX - countX/4, countY - countY/4), startLength, Direction.RIGHT,
 						factory.getPlayer2Control());
 
-				addPlayer(new Position(countX/4, countY - countY/4), startLength, Direction.LEFT,
+				addPlayer(PositionFactory.getPosition(countX/4, countY - countY/4), startLength, Direction.LEFT,
 						factory.getPlayer3Control());
 
 				break;
 			case 4:
-				addPlayer(new Position(countX/4, countY/4), startLength, Direction.LEFT,
+				addPlayer(PositionFactory.getPosition(countX/4, countY/4), startLength, Direction.LEFT,
 						factory.getPlayer1Control());
 
-				addPlayer(new Position(countX - countX/4, countY - countY/4), startLength, Direction.RIGHT,
+				addPlayer(PositionFactory.getPosition(countX - countX/4, countY - countY/4), startLength, Direction.RIGHT,
 						factory.getPlayer2Control());
 
-				addPlayer(new Position(countX/4, countY - countY/4), startLength, Direction.LEFT,
+				addPlayer(PositionFactory.getPosition(countX/4, countY - countY/4), startLength, Direction.LEFT,
 						factory.getPlayer3Control());
 
-				addPlayer(new Position(countX - countX/4, countY/4), startLength, Direction.RIGHT,
+				addPlayer(PositionFactory.getPosition(countX - countX/4, countY/4), startLength, Direction.RIGHT,
 						factory.getPlayer4Control());
 				break;
 
@@ -170,9 +181,8 @@ public class Level implements observator.Observer{
 	}
 
 	private void generateFruits(){
-		List<Fruit> eatenFruits = new ArrayList<>();
+		eatenFruits.clear();
 		while(map.size() >= (countX * countY) || maxFruitCount < fruits.size()) {
-			System.out.println("count: " + maxFruitCount + "size: " + fruits.size());
 			if (!decreaseFruitCount())
 				return;
 		}
@@ -190,14 +200,16 @@ public class Level implements observator.Observer{
 		fruits.removeAll(eatenFruits);
 		map.removeAll(eatenFruits);
 		addFruits(eatenFruits.size());
+		eatenFruitsCount += eatenFruits.size();
 	}
 
 	private void generateFruitPosition(Fruit fruit){
 		boolean emptyPosition = false;
 		while(!emptyPosition) {
 			emptyPosition = true;
-			fruit.getPosition().setX(randomGenerator.nextInt(countX));
-			fruit.getPosition().setY(randomGenerator.nextInt(countY));
+			int x = randomGenerator.nextInt(countX);
+			int y = randomGenerator.nextInt(countY);
+			fruit.updatePosition(PositionFactory.getPosition(x, y));
 
 			for(DrawableObject obj : map)
 				if (collide(obj, fruit))
