@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.net.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.geometry.*?>
@@ -9,34 +10,146 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<AnchorPane fx:id="gamePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
+<AnchorPane fx:id="gamePane" maxHeight="600.0" maxWidth="850.0" minHeight="600.0" minWidth="850.0" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
    <children>
       <HBox layoutX="82.0" layoutY="14.0" prefHeight="26.0" prefWidth="400.0">
          <children>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player1:">
-               <HBox.margin>
-                  <Insets right="50.0" />
-               </HBox.margin>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player2:">
-               <HBox.margin>
-                  <Insets right="50.0" />
-               </HBox.margin>
-            </Text>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player3:">
-               <HBox.margin>
-                  <Insets right="50.0" />
-               </HBox.margin>
-            </Text>
-            <Text fx:id="actionTarget" strokeType="OUTSIDE" strokeWidth="0.0" text="Player4:">
-               <HBox.margin>
-                  <Insets right="50.0" />
-               </HBox.margin>
-            </Text>
+            <HBox id="player1Box" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                     <image>
+                        <Image url="@v1/head.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="78.0" prefWidth="41.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player1:" />
+                        <Label id="player1Score" alignment="CENTER" prefHeight="14.0" prefWidth="43.0" text="0" textAlignment="CENTER" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="50.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox id="player2Box" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                     <image>
+                        <Image url="@v2/head.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="78.0" prefWidth="41.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player2:" />
+                        <Label id="player2Score" alignment="CENTER" prefHeight="16.0" prefWidth="43.0" text="0" textAlignment="CENTER" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="50.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox id="player3Box" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                     <image>
+                        <Image url="@v3/head.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="78.0" prefWidth="41.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player3:" />
+                        <Label id="player3Score" alignment="CENTER" prefHeight="14.0" prefWidth="42.0" text="0" textAlignment="CENTER" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="50.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox id="player4Box" prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
+                     <image>
+                        <Image url="@v4/head.png" />
+                     </image>
+                  </ImageView>
+                  <VBox prefHeight="78.0" prefWidth="41.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player4:" />
+                        <Label id="player4Score" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="44.0" text="0" textAlignment="CENTER" />
+                     </children>
+                     <HBox.margin>
+                        <Insets right="50.0" />
+                     </HBox.margin>
+                  </VBox>
+               </children>
+            </HBox>
          </children>
       </HBox>
-      <Button layoutX="539.0" layoutY="15.0" mnemonicParsing="false" onAction="#switchToMenuMode" text="Menu" />
-      <Canvas height="300.0" layoutX="50.0" layoutY="50.0" width="450.0" fx:id="gameCanvas" />
+      <Button layoutX="730.0" layoutY="16.0" mnemonicParsing="false" onAction="#switchToMenuMode" text="Menu" />
+      <Canvas fx:id="gameCanvas" height="500.0" layoutX="130.0" layoutY="80.0" width="700.0" />
+      <VBox layoutX="10.0" layoutY="161.0" prefHeight="279.0" prefWidth="120.0">
+         <children>
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="72.0" text="POINTS" textAlignment="CENTER" />
+            <HBox prefHeight="21.0" prefWidth="68.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@apple.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="39.0" text="1 pt" />
+               </children>
+            </HBox>
+            <HBox prefHeight="21.0" prefWidth="68.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@pear.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="39.0" text="3 pt" />
+               </children>
+            </HBox>
+            <HBox prefHeight="21.0" prefWidth="68.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@invis.png" />
+                     </image>
+                  </ImageView>
+                  <Label alignment="CENTER" prefHeight="31.0" prefWidth="39.0" text="5 pt" />
+               </children>
+            </HBox>
+            <Label alignment="CENTER" prefHeight="17.0" prefWidth="72.0" text="EFFECTS" textAlignment="CENTER">
+               <padding>
+                  <Insets top="20.0" />
+               </padding>
+            </Label>
+            <HBox prefHeight="17.0" prefWidth="119.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@invis.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Invisibility(1 sec)" wrappingWidth="88.19140625" />
+               </children>
+            </HBox>
+            <HBox prefHeight="21.0" prefWidth="68.0">
+               <children>
+                  <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@pear.png" />
+                     </image>
+                  </ImageView>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Inversed control until next fruit" textAlignment="CENTER" wrappingWidth="88.19140625" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
    </children>
    <stylesheets>
       <URL value="@gameStyle.css" />

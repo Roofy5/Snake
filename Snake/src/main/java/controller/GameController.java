@@ -1,6 +1,8 @@
 package controller;
 
+import model.factories.AbstractControlFactory;
 import model.factories.FixedControlFactory;
+import model.factories.JSONControlFactory;
 import model.factories.SnakeControl;
 import model.logic.Snake;
 import helper.Direction;
@@ -23,6 +25,7 @@ import javafx.util.Duration;
 import model.logic.Level;
 import view.GameView;
 
+import java.io.FileNotFoundException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -39,34 +42,45 @@ public class GameController implements Initializable {
     @FXML
     public void switchToMenuMode(ActionEvent actionEvent) throws Exception{
         Stage mainStage = (Stage) ((Node)actionEvent.getSource()).getScene().getWindow();
-        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("view.fxml"));
+        Parent parent = FXMLLoader.load(getClass().getClassLoader().getResource("menuView.fxml"));
         Scene gameScene = new Scene(parent, 600, 400);
         mainStage.setScene(gameScene);
         mainStage.show();
     }
 
     private int calculateDelay(int currDelay, int size){
-        return (int)(currDelay - (delayDiff/(size / 6.0)));
+        return (int)(currDelay - (delayDiff/(size / 4.0)));
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        int width_count = 40;
-        int height_count = 20;
-        int block_size = 15;
-        int player_count = 4;
-        int start_size = 1;
+        AbstractControlFactory factory;
         int start_delay = 5000;
-        initDelay = 250;
+        initDelay = 200;
         delayDiff = 10;
         minDelay = 20;
+        int width_count;
+        int height_count;
+        int player_count = 4;
+        int start_size = 1;
+        int block_size = 15;
+
+        try{
+            factory = new JSONControlFactory("src/main/resources/settings.json");
+        }
+        catch(FileNotFoundException ex){
+            factory = new FixedControlFactory();
+        }
         Snake.cleanCount();
-        gameLevel = new Level(width_count, height_count);
-        gameLevel.addPlayers(player_count, start_size, new FixedControlFactory());
-        gameLevel.addFruits(4);
-        gameCanvas.setWidth(width_count * block_size);
+        width_count = (int)(gameCanvas.getWidth()/ block_size);
+        height_count = (int)(gameCanvas.getHeight()/ block_size);
         gameCanvas.setHeight(height_count * block_size);
-        gameView = new GameView(gameLevel.getMap(), gameLevel.getSnakes(), gameCanvas, block_size, width_count, height_count);
+        gameLevel = new Level(width_count, height_count);
+        gameLevel.addPlayers(player_count, start_size, factory);
+        gameLevel.addFruits(4);
+
+        gameView = new GameView(gameLevel.getMap(), gameLevel.getSnakes(), gameCanvas,
+                block_size, width_count, height_count);
         initDraw(player_count);
         initTimelines(player_count, start_delay);
     }

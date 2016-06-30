@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.effect.*?>
+<?import java.lang.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.SettingsController">
+   <children>
+      <HBox layoutX="99.0" layoutY="74.0" prefHeight="34.0" prefWidth="236.0" />
+      <Label layoutX="67.0" layoutY="109.0" text="Player1 Control:" />
+      <HBox layoutX="67.0" layoutY="146.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="UP:    ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p1UP" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="67.0" layoutY="181.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="DOWN:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p1DOWN" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="67.0" layoutY="216.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="LEFT:   ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p1LEFT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="67.0" layoutY="251.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="RIGHT:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p1RIGHT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <Button layoutX="334.0" layoutY="45.0" mnemonicParsing="false" onAction="#saveSettings" prefHeight="30.0" prefWidth="50.0" text="Save" />
+      <Button layoutX="415.0" layoutY="45.0" mnemonicParsing="false" onAction="#switchToMenuMode" prefHeight="30.0" prefWidth="50.0" text="Menu" />
+      <HBox layoutX="274.0" layoutY="250.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="RIGHT:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p2RIGHT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="274.0" layoutY="215.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="LEFT:   ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p2LEFT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="274.0" layoutY="180.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="DOWN:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p2DOWN" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="274.0" layoutY="145.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="UP:    ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p2UP" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <Label layoutX="274.0" layoutY="108.0" text="Player2 Control:" />
+      <Label layoutX="270.0" layoutY="290.0" text="Player4 Control:" />
+      <HBox layoutX="270.0" layoutY="327.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="UP:    ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p4UP" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="270.0" layoutY="362.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="DOWN:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p4DOWN" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="270.0" layoutY="397.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="LEFT:   ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p4LEFT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="270.0" layoutY="432.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="RIGHT:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p4RIGHT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="63.0" layoutY="433.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="RIGHT:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p3RIGHT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="63.0" layoutY="398.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="LEFT:   ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p3LEFT" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="63.0" layoutY="363.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="DOWN:">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p3DOWN" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <HBox layoutX="62.0" layoutY="327.0" prefHeight="35.0" prefWidth="170.0">
+         <children>
+            <Label text="UP:    ">
+               <HBox.margin>
+                  <Insets right="20.0" />
+               </HBox.margin>
+            </Label>
+            <TextField fx:id="p3UP" prefHeight="15.0" prefWidth="100.0" />
+         </children>
+      </HBox>
+      <Label layoutX="63.0" layoutY="291.0" text="Player3 Control:" />
+      <Text layoutX="335.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" visible="false" wrappingWidth="84.0" />
+      <Label layoutX="133.0" layoutY="30.0" text="Settings">
+         <font>
+            <Font name="Arial Black" size="30.0" />
+         </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0">
+               <stops>
+                  <Stop color="#62d066" />
+                  <Stop color="#62d066" offset="0.007662835249042145" />
+                  <Stop color="#198d17" offset="1.0" />
+               </stops>
+            </LinearGradient>
+         </textFill>
+         <effect>
+            <DropShadow height="10.62" offsetX="3.0" offsetY="3.0" radius="3.6975" spread="0.14" width="6.17" />
+         </effect>
+      </Label>
+   </children>
+</AnchorPane>
