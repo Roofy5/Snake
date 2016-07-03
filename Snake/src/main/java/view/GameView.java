@@ -43,13 +43,11 @@ public class GameView{
         GraphicsContext gc = gameCanvas.getGraphicsContext2D();
         Position tempPos;
         int graphVersion = 1;
-        //!!
         if(!previousImages.containsKey(snakeVersion))
             previousImages.put(snakeVersion, new ArrayList<>());
         for(Position pos : previousImages.get(snakeVersion))
             gc.clearRect(pos.getX() * block_size, pos.getY() * block_size, block_size, block_size);
         previousImages.get(snakeVersion).clear();
-        //!!
         for(DrawableObject ob : levelMap){
             isSnakePart = isInvisible = false;
             for(Snake snake : snakeList) {
@@ -71,9 +69,14 @@ public class GameView{
                     block_size, block_size);
 
             previousImages.get(snakeVersion).add(tempPos);
-
         }
         gc.strokeRect(0,0,width_count*block_size, height_count*block_size);
+
+    }
+
+    public void clearCanvas(){
+        GraphicsContext gc = gameCanvas.getGraphicsContext2D();
+        gc.clearRect(0,0,width_count*block_size, height_count*block_size);
     }
 
     private Image rotatedImage(DrawableObject ob, Image img){

@@ -2,7 +2,6 @@ package model.logic;
 
 import model.factories.AbstractControlFactory;
 import model.factories.PositionFactory;
-import model.factories.SnakeControl;
 import model.drawable.*;
 import helper.Direction;
 import helper.Position;
@@ -32,11 +31,12 @@ public class Level implements model.observator.Observer{
 		this.maxFruitCount = 5;
 		this.eatenFruitsCount = 0;
 		map = new ArrayList<>();
-		movableSnakes = new LinkedList<>();
+		movableSnakes = new ArrayList<>();
 		fruits = new ArrayList<>();
 		eatenFruits = new ArrayList<>();
 		randomGenerator = new Random();
 		deadSnakes = new ArrayList<>();
+		Snake.cleanCount();
 	}
 
 	public int getEatenFruitsCount() {
@@ -67,10 +67,6 @@ public class Level implements model.observator.Observer{
 
 	public void setMaxFruitCount(int count){
 		maxFruitCount = count;
-	}
-
-	public void decreaseMaxFruitCount(){
-		maxFruitCount -= 1;
 	}
 
 	public void addToObjectList(DrawableObject object){
@@ -231,12 +227,18 @@ public class Level implements model.observator.Observer{
 		for(Fruit fruit : fruits){
 			for(Snake snake : movableSnakes)
 				if(collide(snake.getHead(), fruit)){
-					if(fruit instanceof Pear)
+					if(fruit instanceof Pear) {
 						snake.setSnakeState(SnakeState.INVERSED);
-					else if(fruit instanceof Invis)
+						snake.addScore(5);
+					}
+					else if(fruit instanceof Invis) {
 						snake.setSnakeState(SnakeState.INVISIBLE);
-					else if(fruit instanceof Apple)
+						snake.addScore(3);
+					}
+					else if(fruit instanceof Apple) {
 						snake.setSnakeState(SnakeState.NORMAL);
+						snake.addScore(1);
+					}
 					snake.appendTail();
 					fruit.eaten = true;
 				}

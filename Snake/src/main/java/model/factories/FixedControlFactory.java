@@ -1,6 +1,8 @@
 package model.factories;
 
 
+import model.logic.SnakeControl;
+
 public class FixedControlFactory extends AbstractControlFactory{
     public SnakeControl getPlayer1Control(){
         return new SnakeControl("W", "S", "A", "D");

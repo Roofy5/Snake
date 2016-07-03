@@ -10,11 +10,11 @@
 <?import javafx.scene.layout.*?>
 <?import java.net.URL?>
 
-<AnchorPane fx:id="gamePane" maxHeight="600.0" maxWidth="850.0" minHeight="600.0" minWidth="850.0" prefHeight="600.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
+<AnchorPane maxHeight="650.0" maxWidth="850.0" minHeight="650.0" minWidth="850.0" prefHeight="650.0" prefWidth="850.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.GameController">
    <children>
-      <HBox layoutX="82.0" layoutY="14.0" prefHeight="26.0" prefWidth="400.0">
+      <HBox layoutX="187.0" layoutY="14.0" prefHeight="26.0" prefWidth="400.0">
          <children>
-            <HBox id="player1Box" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="player1Box" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                      <image>
@@ -24,7 +24,7 @@
                   <VBox prefHeight="78.0" prefWidth="41.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player1:" />
-                        <Label id="player1Score" alignment="CENTER" prefHeight="14.0" prefWidth="43.0" text="0" textAlignment="CENTER" />
+                        <Label fx:id="player1Score" alignment="CENTER" prefHeight="14.0" prefWidth="43.0" text="0" textAlignment="CENTER" />
                      </children>
                      <HBox.margin>
                         <Insets right="50.0" />
@@ -32,7 +32,7 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox id="player2Box" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="player2Box" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                      <image>
@@ -42,7 +42,7 @@
                   <VBox prefHeight="78.0" prefWidth="41.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player2:" />
-                        <Label id="player2Score" alignment="CENTER" prefHeight="16.0" prefWidth="43.0" text="0" textAlignment="CENTER" />
+                        <Label fx:id="player2Score" alignment="CENTER" prefHeight="16.0" prefWidth="43.0" text="0" textAlignment="CENTER" />
                      </children>
                      <HBox.margin>
                         <Insets right="50.0" />
@@ -50,7 +50,7 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox id="player3Box" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="player3Box" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                      <image>
@@ -60,7 +60,7 @@
                   <VBox prefHeight="78.0" prefWidth="41.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player3:" />
-                        <Label id="player3Score" alignment="CENTER" prefHeight="14.0" prefWidth="42.0" text="0" textAlignment="CENTER" />
+                        <Label fx:id="player3Score" alignment="CENTER" prefHeight="14.0" prefWidth="42.0" text="0" textAlignment="CENTER" />
                      </children>
                      <HBox.margin>
                         <Insets right="50.0" />
@@ -68,7 +68,7 @@
                   </VBox>
                </children>
             </HBox>
-            <HBox id="player4Box" prefHeight="100.0" prefWidth="200.0">
+            <HBox fx:id="player4Box" prefHeight="100.0" prefWidth="200.0">
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" rotate="90.0">
                      <image>
@@ -78,7 +78,7 @@
                   <VBox prefHeight="78.0" prefWidth="41.0">
                      <children>
                         <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Player4:" />
-                        <Label id="player4Score" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="44.0" text="0" textAlignment="CENTER" />
+                        <Label fx:id="player4Score" alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="44.0" text="0" textAlignment="CENTER" />
                      </children>
                      <HBox.margin>
                         <Insets right="50.0" />
@@ -88,8 +88,24 @@
             </HBox>
          </children>
       </HBox>
-      <Button layoutX="730.0" layoutY="16.0" mnemonicParsing="false" onAction="#switchToMenuMode" text="Menu" />
-      <Canvas fx:id="gameCanvas" height="500.0" layoutX="130.0" layoutY="80.0" width="700.0" />
+      <Text fx:id="player1ControlText" layoutX="175.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="90.0">
+         <font>
+            <Font name="Calibri Italic" size="10.0" />
+         </font></Text>
+      <Text fx:id="player2ControlText" layoutX="298.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="90.0">
+         <font>
+            <Font name="Calibri Italic" size="10.0" />
+         </font></Text>
+      <Text fx:id="player3ControlText" layoutX="418.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="90.0">
+         <font>
+            <Font name="Calibri Italic" size="10.0" />
+         </font></Text>
+      <Text fx:id="player4ControlText" layoutX="543.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Text" textAlignment="CENTER" wrappingWidth="90.0">
+         <font>
+            <Font name="Calibri Italic" size="10.0" />
+         </font></Text>
+      <Button layoutX="771.0" layoutY="19.0" mnemonicParsing="false" onAction="#switchToMenuMode" text="Menu" />
+      <Canvas fx:id="gameCanvas" height="500.0" layoutX="130.0" layoutY="130.0" width="700.0" />
       <VBox layoutX="10.0" layoutY="161.0" prefHeight="279.0" prefWidth="120.0">
          <children>
             <Label alignment="CENTER" prefHeight="17.0" prefWidth="72.0" text="POINTS" textAlignment="CENTER" />
@@ -107,7 +123,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@pear.png" />
+                        <Image url="@invis.png" />
                      </image>
                   </ImageView>
                   <Label alignment="CENTER" prefHeight="31.0" prefWidth="39.0" text="3 pt" />
@@ -117,7 +133,7 @@
                <children>
                   <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@invis.png" />
+                        <Image url="@pear.png" />
                      </image>
                   </ImageView>
                   <Label alignment="CENTER" prefHeight="31.0" prefWidth="39.0" text="5 pt" />
@@ -150,6 +166,7 @@
             </HBox>
          </children>
       </VBox>
+      <Button layoutX="688.0" layoutY="19.0" mnemonicParsing="false" onAction="#resetGame" text="Reset" />
    </children>
    <stylesheets>
       <URL value="@gameStyle.css" />

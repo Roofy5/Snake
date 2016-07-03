@@ -18,6 +18,7 @@ public class Snake implements Observable
 {
 	private static int snakeCounter = 1;
 	private int snakeID;
+	private int snakeScore;
 	private SnakeState snakeState;
 	private List <Observer> observers;
 	private Direction startDirection;
@@ -31,6 +32,7 @@ public class Snake implements Observable
 	{
 		this.startDirection = startDirection;
 		this.head = head;
+		this.snakeScore = 0;
 		this.snakeControl = snakeControl;
 		this.observers = new ArrayList<>();
 		this.snakeState = SnakeState.NORMAL;
@@ -88,6 +90,8 @@ public class Snake implements Observable
 
 	public int getSize() { return blocks.size() + 1;}
 
+	public Integer getSnakeScore() {return snakeScore;}
+
 	public boolean isRunning() {
 		return getCurrentDirection() != Direction.NONE;
 	}
@@ -107,6 +111,10 @@ public class Snake implements Observable
 				getSnakeControl().inverseControl();
 			snakeState = state;
 		}
+	}
+
+	public void addScore(int score){
+		snakeScore += score;
 	}
 
 	public void setDefaultDirection(){

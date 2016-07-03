@@ -21,4 +21,9 @@ public class SnakeControl {
 		left = tempright;
 		right = templeft;
 	}
+
+	@Override
+	public String toString(){
+		return "UP: " + up + "\n" + "DOWN: " + down + "\n" + "LEFT: " + left + "\n" + "RIGHT: " + right + "\n";
+	}
 }

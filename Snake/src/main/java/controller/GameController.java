@@ -1,9 +1,13 @@
 package controller;
 
+import helper.GameSettings;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import model.factories.AbstractControlFactory;
 import model.factories.FixedControlFactory;
 import model.factories.JSONControlFactory;
-import model.factories.SnakeControl;
+import model.logic.SnakeControl;
 import model.logic.Snake;
 import helper.Direction;
 import helper.SnakeState;
@@ -14,7 +18,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,17 +29,28 @@ import model.logic.Level;
 import view.GameView;
 
 import java.io.FileNotFoundException;
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.List;
 
-public class GameController implements Initializable {
+public class GameController{
 
     private Level gameLevel;
     private GameView gameView;
     private Timeline[] timelines;
-    private int initDelay;
-    private int delayDiff;
-    private int minDelay;
+    private Timeline startTimeline;
+    private GameSettings gameSettings;
+    private AbstractControlFactory factory;
+    @FXML private Text player1ControlText;
+    @FXML private Text player2ControlText;
+    @FXML private Text player3ControlText;
+    @FXML private Text player4ControlText;
+    @FXML private HBox player1Box;
+    @FXML private HBox player2Box;
+    @FXML private HBox player3Box;
+    @FXML private HBox player4Box;
+    @FXML private Label player1Score;
+    @FXML private Label player2Score;
+    @FXML private Label player3Score;
+    @FXML private Label player4Score;
     @FXML private Canvas gameCanvas;
 
     @FXML
@@ -49,50 +63,59 @@ public class GameController implements Initializable {
     }
 
     private int calculateDelay(int currDelay, int size){
-        return (int)(currDelay - (delayDiff/(size / 4.0)));
+        return (int)(currDelay - (gameSettings.delayDiff/(size / 4.0)));
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        AbstractControlFactory factory;
-        int start_delay = 5000;
-        initDelay = 200;
-        delayDiff = 10;
-        minDelay = 20;
-        int width_count;
-        int height_count;
-        int player_count = 4;
-        int start_size = 1;
-        int block_size = 15;
-
+    public void setupGame(Integer playerCount, Scene scene) {
+        gameSettings = new GameSettings(playerCount);
+        HBox[] playerBoxes = {player1Box, player2Box, player3Box, player4Box};
+        Text[] playerControlText = {player1ControlText, player2ControlText,player3ControlText,player4ControlText};
         try{
-            factory = new JSONControlFactory("src/main/resources/settings.json");
+            factory = new JSONControlFactory("settings.json");
         }
         catch(FileNotFoundException ex){
             factory = new FixedControlFactory();
         }
-        Snake.cleanCount();
-        width_count = (int)(gameCanvas.getWidth()/ block_size);
-        height_count = (int)(gameCanvas.getHeight()/ block_size);
-        gameCanvas.setHeight(height_count * block_size);
-        gameLevel = new Level(width_count, height_count);
-        gameLevel.addPlayers(player_count, start_size, factory);
-        gameLevel.addFruits(4);
+        initLevel();
+        List<Snake> tempSnakes = gameLevel.getSnakes();
+        for(int i = 0; i < 4; i++) {
+            if(i < playerCount) {
+                playerBoxes[i].setVisible(true);
+                playerControlText[i].setText(tempSnakes.get(i).getSnakeControl().toString());
+            }
+            else {
+                playerBoxes[i].setVisible(false);
+                playerControlText[i].setText("");
 
+            }
+        }
+        attachKeys(scene);
+    }
+
+    private void initLevel(){
+        int widthCount = (int)(gameCanvas.getWidth()/ gameSettings.blockSize);
+        int heightCount = (int)(gameCanvas.getHeight()/ gameSettings.blockSize);
+        gameCanvas.setHeight(heightCount * gameSettings.blockSize);
+        gameCanvas.setWidth(widthCount * gameSettings.blockSize);
+        gameLevel = new Level(widthCount, heightCount);
+        gameLevel.addPlayers(gameSettings.playerCount, gameSettings.startSize, factory);
+        gameLevel.addFruits(4);
         gameView = new GameView(gameLevel.getMap(), gameLevel.getSnakes(), gameCanvas,
-                block_size, width_count, height_count);
-        initDraw(player_count);
-        initTimelines(player_count, start_delay);
+                gameSettings.blockSize, widthCount, heightCount);
+        for(Snake snake : gameLevel.getSnakes())
+            updateLabel(snake);
+        initDraw(gameSettings.playerCount);
+        initTimelines(gameSettings.playerCount, gameSettings.startDelay);
     }
 
     private void initTimelines(int player_count, int start_delay){
         timelines = new Timeline[player_count];
         for(int i = 0; i < player_count; i++) {
-            timelines[i] = new Timeline(new KeyFrame(Duration.ZERO, new TimeHandler(i + 1, initDelay)),
-                    new KeyFrame(Duration.millis(initDelay)));
+            timelines[i] = new Timeline(new KeyFrame(Duration.ZERO, new TimeHandler(i + 1, gameSettings.initDelay)),
+                    new KeyFrame(Duration.millis(gameSettings.initDelay)));
             timelines[i].setCycleCount(Animation.INDEFINITE);
         }
-        Timeline startTimeline = new Timeline(new KeyFrame(Duration.millis(start_delay), ev -> {
+        startTimeline = new Timeline(new KeyFrame(Duration.millis(start_delay), ev -> {
             for(int i = 0; i < player_count; i++) {
                 Snake tempSnake = gameLevel.getSnakeByID(i+1);
                 if(!tempSnake.isRunning())
@@ -125,8 +148,34 @@ public class GameController implements Initializable {
     }
 
     private void initDraw(int player_count){
+        gameView.clearCanvas();
         for(int i = 1; i < player_count + 1; i++)
             gameView.drawSnakeOnCanvas(i);
+    }
+
+    public void resetGame(ActionEvent actionEvent) {
+        for(Timeline timeline : timelines)
+            timeline.stop();
+        startTimeline.stop();
+        initLevel();
+    }
+
+    private void updateLabel(Snake snake){
+        int snakeID = snake.getSnakeID();
+        switch(snakeID){
+            case 1:
+                player1Score.setText(snake.getSnakeScore().toString());
+                break;
+            case 2:
+                player2Score.setText(snake.getSnakeScore().toString());
+                break;
+            case 3:
+                player3Score.setText(snake.getSnakeScore().toString());
+                break;
+            case 4:
+                player4Score.setText(snake.getSnakeScore().toString());
+                break;
+        }
     }
 
     private class TimeHandler implements EventHandler<ActionEvent>{
@@ -142,6 +191,7 @@ public class GameController implements Initializable {
                 prevSize = tempSnake.getSize();
                 tempSnake.move();
                 if(tempSnake.getSize() > prevSize) {
+                    updateLabel(tempSnake);
                     if(tempSnake.getSnakeState() == SnakeState.INVISIBLE) {
                         Timeline invisibilityTimeline = new Timeline(new KeyFrame(Duration.millis(1000), ev -> {
                             if (tempSnake.getSnakeState() == SnakeState.INVISIBLE)
@@ -150,14 +200,13 @@ public class GameController implements Initializable {
                         }));
                         invisibilityTimeline.play();
                     }
-                    if(lastDelay > minDelay) {
+                    if(lastDelay > gameSettings.minDelay) {
                         timelines[version - 1].stop();
                         int currDelay = calculateDelay(lastDelay, tempSnake.getSize());
                         timelines[version - 1].getKeyFrames().setAll(new
                                 KeyFrame(Duration.millis(currDelay),
                                 new TimeHandler(version, currDelay)));
                         timelines[version - 1].play();
-                        System.out.println(currDelay);
                     }
                     if(gameLevel.getEatenFruitsCount() > 50)
                         gameLevel.setMaxFruitCount(1);

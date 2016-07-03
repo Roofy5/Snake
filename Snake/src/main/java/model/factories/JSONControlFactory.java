@@ -1,5 +1,6 @@
 package model.factories;
 
+import model.logic.SnakeControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

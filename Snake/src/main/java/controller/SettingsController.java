@@ -7,12 +7,14 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import model.factories.AbstractControlFactory;
 import model.factories.FixedControlFactory;
 import model.factories.JSONControlFactory;
-import model.factories.SnakeControl;
+import model.logic.SnakeControl;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,6 +25,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class SettingsController implements Initializable{
+    public Text settingsSaved;
     @FXML private TextField p1UP;
     @FXML private TextField p1DOWN;
     @FXML private TextField p1LEFT;
@@ -64,7 +67,7 @@ public class SettingsController implements Initializable{
 
         AbstractControlFactory factory;
         try{
-            factory = new JSONControlFactory("src/main/resources/settings.json");
+            factory = new JSONControlFactory("settings.json");
         }
         catch(FileNotFoundException ex){
             factory = new FixedControlFactory();
@@ -100,13 +103,13 @@ public class SettingsController implements Initializable{
         obj.put("player4",playerControls[3]);
 
         try {
-            FileWriter file = new FileWriter("src/main/resources/settings.json");
+            FileWriter file = new FileWriter("settings.json");
             file.write(obj.toString());
             file.flush();
             file.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("SAVED");
+        settingsSaved.setVisible(true);
     }
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.paint.*?>
@@ -7,10 +8,9 @@
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.collections.*?>
 
-
-<BorderPane fx:controller="controller.ApplicationController"
-        maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane id="menuWindow" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.ApplicationController">
    <top>
       <Text stroke="BLACK" strokeType="OUTSIDE" strokeWidth="0.0" text="SuperSnake" textAlignment="CENTER" BorderPane.alignment="BOTTOM_CENTER">
          <fill>
@@ -48,10 +48,34 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button onAction="#switchToGameMode" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Local Play" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button onAction="#switchToSettingsMode" mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#switchToGameMode" prefHeight="40.0" prefWidth="90.0" text="Play" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button mnemonicParsing="false" onAction="#switchToSettingsMode" prefHeight="40.0" prefWidth="90.0" text="Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
             <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="About" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+            <VBox alignment="CENTER" prefHeight="70.0" prefWidth="26.0" GridPane.columnIndex="2">
+               <children>
+                  <Label alignment="CENTER" prefHeight="17.0" prefWidth="149.0" text="Number of Players:" textAlignment="CENTER" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="12.0" />
+                     </font></Label>
+                  <ComboBox fx:id="playerCount" prefHeight="25.0" prefWidth="50.0">
+                      <value>
+                          <Integer fx:value="1" />
+                      </value>
+                      <items>
+                          <FXCollections fx:factory="observableArrayList">
+                              <Integer fx:value="1" />
+                              <Integer fx:value="2" />
+                              <Integer fx:value="3" />
+                              <Integer fx:value="4" />
+                          </FXCollections>
+                      </items>
+                  </ComboBox>
+               </children>
+            </VBox>
          </children>
       </GridPane>
    </center>
+    <stylesheets>
+        <URL value="@gameStyle.css" />
+    </stylesheets>
 </BorderPane>
