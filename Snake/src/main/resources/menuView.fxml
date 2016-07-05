@@ -50,7 +50,6 @@
          <children>
             <Button mnemonicParsing="false" onAction="#switchToGameMode" prefHeight="40.0" prefWidth="90.0" text="Play" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
             <Button mnemonicParsing="false" onAction="#switchToSettingsMode" prefHeight="40.0" prefWidth="90.0" text="Settings" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" prefHeight="40.0" prefWidth="90.0" text="About" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
             <VBox alignment="CENTER" prefHeight="70.0" prefWidth="26.0" GridPane.columnIndex="2">
                <children>
                   <Label alignment="CENTER" prefHeight="17.0" prefWidth="149.0" text="Number of Players:" textAlignment="CENTER" textFill="WHITE">
